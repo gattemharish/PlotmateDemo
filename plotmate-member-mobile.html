@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhoomi — My Plot</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F3EE;
+    --card: #FFFFFF;
+    --earth: #2A4035;
+    --earth-mid: #3D5E50;
+    --earth-light: #557A6A;
+    --gold: #C8973F;
+    --gold-light: #E8BE78;
+    --gold-pale: #FBF3E2;
+    --terracotta: #B85C38;
+    --terracotta-light: #E8896A;
+    --terracotta-pale: #FDF0EA;
+    --sage: #7A9E8E;
+    --cream: #FAF7F2;
+    --stone: #9B8B75;
+    --text: #1C1C1C;
+    --text-mid: #4A4540;
+    --text-soft: #8A8078;
+    --border: rgba(0,0,0,0.07);
+    --paid-green: #1E7A4A;
+    --paid-bg: #EAF5EF;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+    --shadow-md: 0 8px 24px rgba(0,0,0,0.09);
+    --shadow-lg: 0 16px 48px rgba(0,0,0,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 0 0 80px 0;
+  }
+
+  /* PHONE SHELL for demo */
+  .phone-shell {
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+  }
+
+  /* TOP NAV */
+  .top-nav {
+    background: var(--earth);
+    padding: 52px 20px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .top-nav::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: rgba(200,151,63,0.12);
+    border-radius: 50%;
+  }
+
+  .top-nav::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -30px;
+    width: 180px; height: 180px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+
+  .nav-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-logo-icon {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .nav-logo-text {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--gold-light);
+    letter-spacing: 0.3px;
+  }
+
+  .nav-icons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .nav-icon-btn {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .nav-icon-btn:hover { background: rgba(255,255,255,0.18); }
+
+  .notif-dot {
+    position: absolute;
+    top: 6px; right: 6px;
+    width: 8px; height: 8px;
+    background: var(--terracotta-light);
+    border-radius: 50%;
+    border: 2px solid var(--earth);
+  }
+
+  /* GREETING */
+  .greeting {
+    position: relative;
+    z-index: 1;
+  }
+
+  .greeting-hi {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+  }
+
+  .greeting-name {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  .venture-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(200,151,63,0.2);
+    border: 1px solid rgba(200,151,63,0.3);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: var(--gold-light);
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  /* HERO PLOT CARD */
+  .hero-wrap {
+    padding: 0 16px;
+    margin-top: -1px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .hero-card {
+    background: linear-gradient(145deg, #1A2E26 0%, #2A4035 60%, #3D5E50 100%);
+    border-radius: 20px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    animation: heroIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  @keyframes heroIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 130px; height: 130px;
+    background: radial-gradient(circle, rgba(200,151,63,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero-card::after {
+    content: '';
+    position: absolute;
+    bottom: -50px; left: 20px;
+    width: 150px; height: 150px;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  /* Subtle grid pattern */
+  .hero-card .grid-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+    border-radius: 20px;
+  }
+
+  .hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .plot-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+
+  .plot-number {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .plot-number span {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .membership-status {
+    background: rgba(200,151,63,0.2);
+    border: 1px solid rgba(200,151,63,0.4);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold-light);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .hero-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .hero-detail-item { }
+  .hero-detail-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .hero-detail-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    font-family: 'DM Mono', monospace;
+  }
+  .hero-detail-value.soft { font-family: 'Instrument Sans', sans-serif; font-weight: 500; }
+
+  /* DUE AMOUNT section */
+  .hero-due {
+    position: relative;
+    z-index: 1;
+  }
+
+  .due-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .due-left { }
+  .due-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+  }
+
+  .due-amount {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--gold-light);
+  }
+
+  .due-deadline {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 2px;
+  }
+
+  .due-deadline.overdue { color: var(--terracotta-light); }
+
+  .pay-btn {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--earth);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Instrument Sans', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 16px rgba(200,151,63,0.4);
+  }
+
+  .pay-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(200,151,63,0.5);
+  }
+
+  .pay-btn:active { transform: translateY(0); }
+
+  /* SECTION */
+  .section {
+    padding: 20px 16px 0;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .section-link {
+    font-size: 12px;
+    color: var(--earth-mid);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* QUICK ACTIONS */
+  .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 4px;
+    animation: fadeUp 0.5s ease 0.2s both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .quick-action {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 14px 8px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .quick-action:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(42,64,53,0.15);
+  }
+
+  .qa-icon { font-size: 22px; margin-bottom: 6px; }
+  .qa-label { font-size: 10px; font-weight: 600; color: var(--text-mid); line-height: 1.3; }
+
+  /* STATUS CARD */
+  .status-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    animation: fadeUp 0.5s ease 0.25s both;
+  }
+
+  .status-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .status-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .status-row:first-child { padding-top: 0; }
+
+  .status-icon-wrap {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .status-icon-wrap.green { background: var(--paid-bg); }
+  .status-icon-wrap.orange { background: var(--terracotta-pale); }
+  .status-icon-wrap.gold { background: var(--gold-pale); }
+
+  .status-content { flex: 1; }
+  .status-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .status-desc { font-size: 11px; color: var(--text-soft); margin-top: 1px; }
+
+  .status-right { text-align: right; }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .status-badge.paid { background: var(--paid-bg); color: var(--paid-green); }
+  .status-badge.pending { background: var(--terracotta-pale); color: var(--terracotta); }
+  .status-badge.partial { background: var(--gold-pale); color: var(--gold); }
+
+  .status-amount {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    margin-top: 3px;
+  }
+
+  /* PAYMENT HISTORY */
+  .payment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: fadeUp 0.5s ease 0.3s both;
+  }
+
+  .payment-item {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .payment-item:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+    border-left: 3px solid var(--paid-green);
+  }
+
+  .payment-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    background: var(--paid-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .payment-icon.membership { background: var(--gold-pale); }
+
+  .payment-info { flex: 1; }
+  .payment-title { font-size: 13px; font-weight: 600; color: var(--text); }
+  .payment-meta {
+    font-size: 11px;
+    color: var(--text-soft);
+    margin-top: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .payment-right { text-align: right; }
+  .payment-amount {
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--paid-green);
+  }
+  .payment-date { font-size: 11px; color: var(--text-soft); margin-top: 2px; }
+
+  .receipt-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    color: var(--earth-mid);
+    font-weight: 600;
+    margin-top: 4px;
+    cursor: pointer;
+  }
+
+  /* SITE PHOTOS */
+  .photos-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+    animation: fadeUp 0.5s ease 0.35s both;
+  }
+
+  .photos-scroll::-webkit-scrollbar { display: none; }
+
+  .photo-card {
+    flex-shrink: 0;
+    width: 160px;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s;
+  }
+
+  .photo-card:hover { transform: scale(1.03); box-shadow: var(--shadow-md); }
+
+  .photo-thumb {
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    position: relative;
+  }
+
+  .photo-thumb-1 { background: linear-gradient(135deg, #2A4035, #3D7A5A); }
+  .photo-thumb-2 { background: linear-gradient(135deg, #4A3522, #8B6A3E); }
+  .photo-thumb-3 { background: linear-gradient(135deg, #1A3040, #2A5A78); }
+  .photo-thumb-4 { background: linear-gradient(135deg, #3A2A40, #6A4A7A); }
+
+  .photo-info {
+    background: #fff;
+    padding: 10px 12px;
+  }
+
+  .photo-title { font-size: 12px; font-weight: 600; color: var(--text); }
+  .photo-date { font-size: 10px; color: var(--text-soft); margin-top: 2px; }
+
+  /* NEW tag */
+  .new-tag {
+    position: absolute;
+    top: 8px; left: 8px;
+    background: var(--terracotta);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ANNOUNCEMENTS */
+  .announcement-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    animation: fadeUp 0.5s ease 0.4s both;
+  }
+
+  .announcement-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+  .ann-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .ann-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .ann-icon.meeting { background: rgba(42,64,53,0.08); }
+  .ann-icon.alert { background: var(--terracotta-pale); }
+  .ann-icon.info { background: var(--gold-pale); }
+
+  .ann-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .ann-date { font-size: 11px; color: var(--text-soft); }
+
+  .ann-unread {
+    width: 8px; height: 8px;
+    background: var(--terracotta);
+    border-radius: 50%;
+    margin-left: auto;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .ann-body { font-size: 12px; color: var(--text-mid); line-height: 1.6; }
+
+  .ann-action {
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--earth);
+    cursor: pointer;
+  }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    display: flex;
+    padding: 10px 0 16px;
+    z-index: 100;
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.08);
+  }
+
+  .bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    padding: 4px 0;
+    transition: all 0.15s;
+  }
+
+  .bottom-nav-item:hover { opacity: 0.8; }
+
+  .bn-icon { font-size: 20px; position: relative; }
+  .bn-label { font-size: 10px; font-weight: 500; color: var(--text-soft); }
+  .bottom-nav-item.active .bn-label { color: var(--earth); font-weight: 700; }
+
+  .bn-dot {
+    position: absolute;
+    top: -2px; right: -4px;
+    width: 7px; height: 7px;
+    background: var(--terracotta);
+    border-radius: 50%;
+    border: 1.5px solid #fff;
+  }
+
+  /* PAY MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .pay-sheet {
+    background: #fff;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 24px 24px 0 0;
+    overflow: hidden;
+    animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .sheet-handle {
+    width: 36px; height: 4px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 2px;
+    margin: 12px auto 0;
+  }
+
+  .sheet-header {
+    padding: 16px 24px 0;
+    text-align: center;
+  }
+
+  .sheet-title {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 8px;
+  }
+
+  .sheet-subtitle { font-size: 13px; color: var(--text-soft); margin-top: 4px; }
+
+  .sheet-amount-display {
+    background: linear-gradient(135deg, var(--earth), var(--earth-mid));
+    margin: 20px 24px;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sheet-amount-display::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 100px; height: 100px;
+    background: rgba(200,151,63,0.15);
+    border-radius: 50%;
+  }
+
+  .sheet-due-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
+  .sheet-due-amount {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--gold-light);
+    position: relative;
+    z-index: 1;
+  }
+
+  .sheet-due-meta { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+  .sheet-breakdown {
+    padding: 0 24px;
+    margin-bottom: 16px;
+  }
+
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-size: 13px;
+  }
+
+  .breakdown-row:last-child { border-bottom: none; }
+  .breakdown-row .bl { color: var(--text-soft); }
+  .breakdown-row .bv { font-weight: 600; font-family: 'DM Mono', monospace; }
+
+  .upi-options {
+    padding: 0 24px;
+    margin-bottom: 16px;
+  }
+
+  .upi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-soft); margin-bottom: 10px; }
+
+  .upi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+  .upi-opt {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-mid);
+  }
+
+  .upi-opt.selected { border-color: var(--earth); background: rgba(42,64,53,0.05); color: var(--earth); }
+  .upi-opt:hover:not(.selected) { border-color: rgba(0,0,0,0.15); background: var(--bg); }
+  .upi-opt-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+
+  .pay-now-btn {
+    margin: 0 24px 32px;
+    background: linear-gradient(135deg, var(--earth), var(--earth-mid));
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    width: calc(100% - 48px);
+    font-family: 'Instrument Sans', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .pay-now-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(42,64,53,0.35); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    background: var(--earth);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 300;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* NOTICE BANNER */
+  .notice-banner {
+    margin: 12px 16px 0;
+    background: var(--terracotta-pale);
+    border: 1px solid rgba(184,92,56,0.2);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeUp 0.5s ease 0.1s both;
+    cursor: pointer;
+  }
+
+  .notice-banner:hover { background: #FCE8DC; }
+
+  .notice-icon { font-size: 18px; flex-shrink: 0; }
+  .notice-text { flex: 1; }
+  .notice-title { font-size: 12px; font-weight: 700; color: var(--terracotta); }
+  .notice-desc { font-size: 11px; color: var(--text-mid); margin-top: 1px; }
+  .notice-arrow { font-size: 14px; color: var(--terracotta); }
+
+  /* spacing utils */
+  .mt-16 { margin-top: 16px; }
+  .mt-20 { margin-top: 20px; }
+
+  /* Demo label */
+  .demo-label {
+    text-align: center;
+    padding: 10px;
+    font-size: 11px;
+    color: var(--text-soft);
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.5px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="phone-shell">
+
+  <div class="demo-label">📱 MEMBER VIEW — Plot Owner Experience</div>
+
+  <!-- TOP NAV -->
+  <div class="top-nav">
+    <div class="nav-top-row">
+      <div class="nav-logo">
+        <div class="nav-logo-icon">🌿</div>
+        <div class="nav-logo-text">Bhoomi</div>
+      </div>
+      <div class="nav-icons">
+        <div class="nav-icon-btn" onclick="showToast('🔔 2 new notifications')">
+          🔔
+          <div class="notif-dot"></div>
+        </div>
+        <div class="nav-icon-btn" onclick="showToast('Profile opened')">👤</div>
+      </div>
+    </div>
+
+    <div class="greeting">
+      <div class="greeting-hi">Good morning,</div>
+      <div class="greeting-name">Suresh Reddy 👋</div>
+      <div class="venture-chip">📍 Green Aero View Layout, Tukkuguda, Hyderabad, Telangana</div>
+    </div>
+  </div>
+
+  <!-- OVERDUE NOTICE -->
+  <div class="notice-banner" onclick="openPaySheet()">
+    <div class="notice-icon">⚠️</div>
+    <div class="notice-text">
+      <div class="notice-title">Maintenance fee overdue by 42 days</div>
+      <div class="notice-desc">₹6,000 pending for FY 2024–25 · Tap to pay now</div>
+    </div>
+    <div class="notice-arrow">›</div>
+  </div>
+
+  <!-- HERO PLOT CARD -->
+  <div class="hero-wrap mt-16">
+    <div class="hero-card">
+      <div class="grid-pattern"></div>
+
+      <div class="hero-top">
+        <div>
+          <div class="plot-label">Your Plot</div>
+          <div class="plot-number"><span>P—</span>047</div>
+        </div>
+        <div class="membership-status">✅ Member</div>
+      </div>
+
+      <div class="hero-details">
+        <div class="hero-detail-item">
+          <div class="hero-detail-label">Size</div>
+          <div class="hero-detail-value">200 sqyd</div>
+        </div>
+        <div class="hero-detail-item">
+          <div class="hero-detail-label">Rate</div>
+          <div class="hero-detail-value">₹30/sqyd</div>
+        </div>
+        <div class="hero-detail-item">
+          <div class="hero-detail-label">Venture</div>
+          <div class="hero-detail-value soft">Phase 2</div>
+        </div>
+      </div>
+
+      <div class="hero-due">
+        <div class="due-row">
+          <div class="due-left">
+            <div class="due-label">Maintenance Due — FY 2024–25</div>
+            <div class="due-amount">₹6,000</div>
+            <div class="due-deadline overdue">⏰ Overdue by 42 days</div>
+          </div>
+          <button class="pay-btn" onclick="openPaySheet()">
+            💳 Pay Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="section mt-20">
+    <div class="quick-actions">
+      <div class="quick-action" onclick="openPaySheet()">
+        <div class="qa-icon">💳</div>
+        <div class="qa-label">Pay Fees</div>
+      </div>
+      <div class="quick-action" onclick="showToast('Payment history opened')">
+        <div class="qa-icon">📋</div>
+        <div class="qa-label">History</div>
+      </div>
+      <div class="quick-action" onclick="showToast('Site photos opened')">
+        <div class="qa-icon">📸</div>
+        <div class="qa-label">Site Photos</div>
+      </div>
+      <div class="quick-action" onclick="showToast('Documents opened')">
+        <div class="qa-icon">📄</div>
+        <div class="qa-label">Documents</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEE STATUS -->
+  <div class="section mt-20">
+    <div class="section-header">
+      <div class="section-title">Fee Status</div>
+      <div class="section-link" onclick="showToast('Full history opened')">View all →</div>
+    </div>
+    <div class="status-card">
+      <div class="status-row">
+        <div class="status-icon-wrap orange">⏳</div>
+        <div class="status-content">
+          <div class="status-name">Maintenance — FY 2024–25</div>
+          <div class="status-desc">200 sqyd × ₹30 · Due March 31, 2025</div>
+        </div>
+        <div class="status-right">
+          <span class="status-badge pending">⏳ Pending</span>
+          <div class="status-amount">₹6,000</div>
+        </div>
+      </div>
+      <div class="status-row">
+        <div class="status-icon-wrap green">✅</div>
+        <div class="status-content">
+          <div class="status-name">Maintenance — FY 2023–24</div>
+          <div class="status-desc">Paid on Apr 12, 2023</div>
+        </div>
+        <div class="status-right">
+          <span class="status-badge paid">✅ Paid</span>
+          <div class="status-amount">₹5,400</div>
+        </div>
+      </div>
+      <div class="status-row">
+        <div class="status-icon-wrap gold">🏅</div>
+        <div class="status-content">
+          <div class="status-name">Association Membership</div>
+          <div class="status-desc">One-time · Paid on Jan 5, 2022</div>
+        </div>
+        <div class="status-right">
+          <span class="status-badge paid">✅ Paid</span>
+          <div class="status-amount">₹1,000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT HISTORY -->
+  <div class="section mt-20">
+    <div class="section-header">
+      <div class="section-title">Payment History</div>
+      <div class="section-link" onclick="showToast('All transactions opened')">See all →</div>
+    </div>
+    <div class="payment-list">
+      <div class="payment-item" onclick="showToast('Receipt downloaded for FY 2023–24')">
+        <div class="payment-icon">🏡</div>
+        <div class="payment-info">
+          <div class="payment-title">Maintenance FY 2023–24</div>
+          <div class="payment-meta">UTR: HDFC2023041289 · Bank Transfer</div>
+          <div class="receipt-link">📄 Download Receipt</div>
+        </div>
+        <div class="payment-right">
+          <div class="payment-amount">₹5,400</div>
+          <div class="payment-date">Apr 12, 2023</div>
+        </div>
+      </div>
+      <div class="payment-item" onclick="showToast('Receipt downloaded for FY 2022–23')">
+        <div class="payment-icon">🏡</div>
+        <div class="payment-info">
+          <div class="payment-title">Maintenance FY 2022–23</div>
+          <div class="payment-meta">UTR: SBI2022040877 · Bank Transfer</div>
+          <div class="receipt-link">📄 Download Receipt</div>
+        </div>
+        <div class="payment-right">
+          <div class="payment-amount">₹4,800</div>
+          <div class="payment-date">Apr 8, 2022</div>
+        </div>
+      </div>
+      <div class="payment-item" onclick="showToast('Receipt downloaded for membership')">
+        <div class="payment-icon membership">🏅</div>
+        <div class="payment-info">
+          <div class="payment-title">Association Membership</div>
+          <div class="payment-meta">UTR: ICICI2022010544 · One-time</div>
+          <div class="receipt-link">📄 Download Receipt</div>
+        </div>
+        <div class="payment-right">
+          <div class="payment-amount">₹1,000</div>
+          <div class="payment-date">Jan 5, 2022</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SITE PHOTOS -->
+  <div class="section mt-20">
+    <div class="section-header">
+      <div class="section-title">Site Updates</div>
+      <div class="section-link" onclick="showToast('All site photos opened')">See all →</div>
+    </div>
+    <div class="photos-scroll">
+      <div class="photo-card" onclick="showToast('Road laying photos opened')">
+        <div class="photo-thumb photo-thumb-1">🏗
+          <div class="new-tag">New</div>
+        </div>
+        <div class="photo-info">
+          <div class="photo-title">Road Laying</div>
+          <div class="photo-date">3 days ago · 6 photos</div>
+        </div>
+      </div>
+      <div class="photo-card" onclick="showToast('Street light photos opened')">
+        <div class="photo-thumb photo-thumb-2">💡
+          <div class="new-tag">New</div>
+        </div>
+        <div class="photo-info">
+          <div class="photo-title">Street Lights</div>
+          <div class="photo-date">1 week ago · 4 photos</div>
+        </div>
+      </div>
+      <div class="photo-card" onclick="showToast('Plantation photos opened')">
+        <div class="photo-thumb photo-thumb-3">🌳</div>
+        <div class="photo-info">
+          <div class="photo-title">Plantation Drive</div>
+          <div class="photo-date">2 weeks ago · 8 photos</div>
+        </div>
+      </div>
+      <div class="photo-card" onclick="showToast('Compound wall photos opened')">
+        <div class="photo-thumb photo-thumb-4">🧱</div>
+        <div class="photo-info">
+          <div class="photo-title">Compound Wall</div>
+          <div class="photo-date">1 month ago · 5 photos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANNOUNCEMENTS -->
+  <div class="section mt-20" style="padding-bottom: 100px;">
+    <div class="section-header">
+      <div class="section-title">Announcements</div>
+      <div class="section-link" onclick="showToast('All announcements opened')">See all →</div>
+    </div>
+
+    <div class="announcement-card">
+      <div class="ann-top">
+        <div class="ann-icon meeting">📅</div>
+        <div>
+          <div class="ann-title">Association Meeting — March 23rd</div>
+          <div class="ann-date">Posted 2 days ago by Secretary</div>
+        </div>
+        <div class="ann-unread"></div>
+      </div>
+      <div class="ann-body">
+        Quarterly association meeting scheduled for <strong>March 23rd, 2025 at 11:00 AM</strong>. Topics: road progress update, drainage work tender, pending fee collections. Google Meet link will be shared 1 hour before.
+      </div>
+      <div class="ann-action" onclick="showToast('Meeting added to calendar')">📅 Add to Calendar ›</div>
+    </div>
+
+    <div class="announcement-card">
+      <div class="ann-top">
+        <div class="ann-icon alert">⚠️</div>
+        <div>
+          <div class="ann-title">Maintenance Fee Deadline Reminder</div>
+          <div class="ann-date">Posted 5 days ago by Secretary</div>
+        </div>
+      </div>
+      <div class="ann-body">
+        This is a reminder that maintenance fees for FY 2024–25 are due by <strong>March 31, 2025</strong>. Please transfer to the association account and submit your UTR on Bhoomi to get your receipt.
+      </div>
+    </div>
+
+    <div class="announcement-card">
+      <div class="ann-top">
+        <div class="ann-icon info">🏗</div>
+        <div>
+          <div class="ann-title">Road Work Update — Phase 1 Complete</div>
+          <div class="ann-date">Posted 2 weeks ago by Secretary</div>
+        </div>
+      </div>
+      <div class="ann-body">
+        Road laying for Phase 1 plots (1–100) is now complete. Phase 2 work begins April 1st. New photos have been uploaded to the Site Updates gallery.
+      </div>
+      <div class="ann-action" onclick="showToast('Site photos opened')">📸 View Photos ›</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PAY BOTTOM SHEET -->
+<div class="modal-overlay" id="payModal" onclick="closePaySheet(event)">
+  <div class="pay-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">Pay Maintenance Fee</div>
+      <div class="sheet-subtitle">Plot P-047 · Green Aero View Layout · FY 2024–25</div>
+    </div>
+
+    <div class="sheet-amount-display">
+      <div class="sheet-due-label">Amount Due</div>
+      <div class="sheet-due-amount">₹6,000</div>
+      <div class="sheet-due-meta">200 sq yds × ₹30/sq yd</div>
+    </div>
+
+    <div class="sheet-breakdown">
+      <div class="breakdown-row">
+        <span class="bl">Maintenance (200 sqyd × ₹30)</span>
+        <span class="bv">₹6,000</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="bl">Association A/C</span>
+        <span class="bv">XXXX 4521</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="bl">IFSC</span>
+        <span class="bv">HDFC0001234</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="bl">Payment Ref (use this)</span>
+        <span class="bv" style="color:var(--earth)">P047-2425</span>
+      </div>
+    </div>
+
+    <div class="upi-options">
+      <div class="upi-label">Pay via</div>
+      <div class="upi-grid">
+        <div class="upi-opt selected" onclick="selectUPI(this)">
+          <span class="upi-opt-icon">📱</span>GPay
+        </div>
+        <div class="upi-opt" onclick="selectUPI(this)">
+          <span class="upi-opt-icon">💜</span>PhonePe
+        </div>
+        <div class="upi-opt" onclick="selectUPI(this)">
+          <span class="upi-opt-icon">🏦</span>Net Banking
+        </div>
+      </div>
+    </div>
+
+    <button class="pay-now-btn" onclick="confirmPayment()">
+      🔒 Pay ₹6,000 Securely
+    </button>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="bottom-nav-item active">
+    <div class="bn-icon">🏠</div>
+    <div class="bn-label">Home</div>
+  </div>
+  <div class="bottom-nav-item" onclick="showToast('Payments section opened')">
+    <div class="bn-icon">
+      💳
+      <div class="bn-dot"></div>
+    </div>
+    <div class="bn-label">Payments</div>
+  </div>
+  <div class="bottom-nav-item" onclick="showToast('Site gallery opened')">
+    <div class="bn-icon">📸</div>
+    <div class="bn-label">Site</div>
+  </div>
+  <div class="bottom-nav-item" onclick="showToast('Announcements opened')">
+    <div class="bn-icon">📢</div>
+    <div class="bn-label">Updates</div>
+  </div>
+  <div class="bottom-nav-item" onclick="showToast('Profile opened')">
+    <div class="bn-icon">👤</div>
+    <div class="bn-label">Profile</div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span id="toastIcon">✅</span>
+  <span id="toastMsg">Done</span>
+</div>
+
+<script>
+  function openPaySheet() {
+    document.getElementById('payModal').classList.add('show');
+  }
+
+  function closePaySheet(e) {
+    if (e.target === document.getElementById('payModal')) {
+      document.getElementById('payModal').classList.remove('show');
+    }
+  }
+
+  function selectUPI(el) {
+    document.querySelectorAll('.upi-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function confirmPayment() {
+    document.getElementById('payModal').classList.remove('show');
+    setTimeout(() => {
+      showToast('✅ Payment of ₹6,000 submitted! Receipt will be sent on WhatsApp.');
+    }, 300);
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  // Bottom nav active state
+  document.querySelectorAll('.bottom-nav-item').forEach(item => {
+    item.addEventListener('click', function() {
+      document.querySelectorAll('.bottom-nav-item').forEach(i => i.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

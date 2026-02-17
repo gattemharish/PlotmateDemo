@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlotMate — Digital tool for plot owners</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --earth: #2D4A3E;
+    --earth-light: #3D6357;
+    --earth-dark: #1A2E26;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-pale: #F5E9C8;
+    --cream: #FAF7F0;
+    --clay: #E8D5B0;
+    --terracotta: #C4704A;
+    --terracotta-light: #E8967A;
+    --stone: #8B7355;
+    --mist: #F0EDE6;
+    --text-dark: #1A1A1A;
+    --text-mid: #4A4A4A;
+    --text-light: #8A8A8A;
+    --paid: #2D7A4F;
+    --paid-bg: #E8F5EE;
+    --pending: #C4704A;
+    --pending-bg: #FDF0EA;
+    --unknown: #7A6A4F;
+    --unknown-bg: #F5F0E8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 240px;
+    background: var(--earth-dark);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 28px 24px 24px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold-light);
+    letter-spacing: 0.5px;
+  }
+
+  .logo-tagline {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding-left: 46px;
+  }
+
+  .venture-badge {
+    margin: 16px 16px 0;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+
+  .venture-label {
+    font-size: 10px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+  }
+
+  .venture-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .venture-location {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 1px;
+  }
+
+  .sidebar-nav {
+    padding: 20px 12px;
+    flex: 1;
+  }
+
+  .nav-section-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 0 12px;
+    margin-bottom: 8px;
+    margin-top: 16px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 2px;
+    color: rgba(255,255,255,0.55);
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
+
+  .nav-item.active {
+    background: rgba(201,168,76,0.15);
+    color: var(--gold-light);
+    font-weight: 500;
+  }
+
+  .nav-item .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+  .nav-badge {
+    margin-left: auto;
+    background: var(--terracotta);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+
+  .sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .user-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--earth-light), var(--earth));
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold-light);
+  }
+
+  .user-info { flex: 1; }
+  .user-name { font-size: 13px; color: #fff; font-weight: 500; }
+  .user-role { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+  /* MAIN */
+  .main {
+    margin-left: 240px;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    background: var(--cream);
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    padding: 0 32px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .page-title-wrap { }
+  .page-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; color: var(--earth-dark); }
+  .page-subtitle { font-size: 12px; color: var(--text-light); margin-top: 1px; }
+
+  .topbar-actions { display: flex; align-items: center; gap: 12px; }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-mid);
+    border: 1px solid rgba(0,0,0,0.12);
+  }
+
+  .btn-ghost:hover { background: var(--mist); }
+
+  .btn-primary {
+    background: var(--earth);
+    color: #fff;
+  }
+
+  .btn-primary:hover { background: var(--earth-light); }
+
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--earth-dark);
+    font-weight: 600;
+  }
+
+  .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(201,168,76,0.35); }
+
+  /* CONTENT */
+  .content { padding: 28px 32px; }
+
+  /* ALERT BANNER */
+  .alert-banner {
+    background: linear-gradient(135deg, #FEF3E8, #FDE8D8);
+    border: 1px solid rgba(196,112,74,0.3);
+    border-left: 4px solid var(--terracotta);
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    animation: slideDown 0.5s ease;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .alert-icon { font-size: 20px; }
+  .alert-text { flex: 1; }
+  .alert-title { font-size: 13px; font-weight: 600; color: var(--terracotta); }
+  .alert-desc { font-size: 12px; color: var(--text-mid); margin-top: 2px; }
+  .alert-action { font-size: 12px; font-weight: 600; color: var(--terracotta); cursor: pointer; white-space: nowrap; text-decoration: underline; }
+
+  /* STATS GRID */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .stat-card:nth-child(1) { animation-delay: 0.05s; }
+  .stat-card:nth-child(2) { animation-delay: 0.1s; }
+  .stat-card:nth-child(3) { animation-delay: 0.15s; }
+  .stat-card:nth-child(4) { animation-delay: 0.2s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    opacity: 0.06;
+    transform: translate(20px, -20px);
+  }
+
+  .stat-card.total::before { background: var(--earth); }
+  .stat-card.paid::before { background: var(--paid); }
+  .stat-card.pending::before { background: var(--terracotta); }
+  .stat-card.unknown::before { background: var(--stone); }
+
+  .stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-card.total .stat-value { color: var(--earth-dark); }
+  .stat-card.paid .stat-value { color: var(--paid); }
+  .stat-card.pending .stat-value { color: var(--terracotta); }
+  .stat-card.unknown .stat-value { color: var(--stone); }
+
+  .stat-sub {
+    font-size: 12px;
+    color: var(--text-light);
+  }
+
+  .stat-sub strong { color: var(--text-mid); }
+
+  .stat-icon {
+    position: absolute;
+    top: 20px; right: 20px;
+    font-size: 22px;
+    opacity: 0.7;
+  }
+
+  .stat-progress {
+    margin-top: 12px;
+    height: 4px;
+    background: var(--mist);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .stat-progress-bar {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1.2s ease;
+  }
+
+  .paid .stat-progress-bar { background: var(--paid); }
+  .pending .stat-progress-bar { background: var(--terracotta); }
+
+  /* MIDDLE ROW */
+  .middle-row {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  /* COLLECTION CARD */
+  .collection-card {
+    background: linear-gradient(135deg, var(--earth-dark) 0%, var(--earth) 100%);
+    border-radius: 12px;
+    padding: 24px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease 0.25s both;
+  }
+
+  .collection-card::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: rgba(201,168,76,0.12);
+    border-radius: 50%;
+  }
+
+  .collection-card::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 60px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+
+  .collection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .collection-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 4px;
+  }
+
+  .collection-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--gold-light);
+  }
+
+  .collection-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .collection-amount span {
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .collection-target {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+  }
+
+  .collection-target strong { color: rgba(255,255,255,0.8); }
+
+  .collection-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .collection-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 4px;
+    width: 0%;
+    transition: width 1.5s ease;
+  }
+
+  .collection-breakdown {
+    display: flex;
+    gap: 20px;
+  }
+
+  .breakdown-item { }
+  .breakdown-label { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; }
+  .breakdown-value { font-size: 15px; font-weight: 600; color: #fff; margin-top: 2px; font-family: 'DM Mono', monospace; }
+
+  /* REMINDERS CARD */
+  .reminders-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(0,0,0,0.06);
+    animation: fadeUp 0.5s ease 0.3s both;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+
+  .card-action {
+    font-size: 12px;
+    color: var(--earth);
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .reminder-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--mist);
+  }
+
+  .reminder-item:last-child { border-bottom: none; }
+
+  .reminder-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .reminder-dot.overdue { background: var(--terracotta); box-shadow: 0 0 0 3px rgba(196,112,74,0.2); }
+  .reminder-dot.due-soon { background: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.2); }
+  .reminder-dot.scheduled { background: var(--earth-light); }
+
+  .reminder-text { flex: 1; }
+  .reminder-name { font-size: 13px; font-weight: 500; color: var(--text-dark); }
+  .reminder-detail { font-size: 11px; color: var(--text-light); margin-top: 1px; }
+  .reminder-amount { font-size: 13px; font-weight: 600; font-family: 'DM Mono', monospace; color: var(--terracotta); }
+
+  .send-reminder-btn {
+    background: var(--earth);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 14px;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .send-reminder-btn:hover { background: var(--earth-light); transform: translateY(-1px); }
+
+  /* PLOT TABLE */
+  .table-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.06);
+    overflow: hidden;
+    animation: fadeUp 0.5s ease 0.35s both;
+  }
+
+  .table-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--mist);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .table-title { font-size: 15px; font-weight: 600; color: var(--text-dark); }
+  .table-subtitle { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+
+  .table-filters { display: flex; gap: 8px; align-items: center; }
+
+  .filter-chip {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: transparent;
+    color: var(--text-mid);
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .filter-chip.active { background: var(--earth); color: #fff; border-color: var(--earth); }
+  .filter-chip:hover:not(.active) { background: var(--mist); }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--mist);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: var(--text-light);
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead th {
+    background: var(--mist);
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-light);
+  }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    transition: background 0.15s;
+    animation: fadeUp 0.3s ease both;
+  }
+
+  tbody tr:hover { background: #FAFAF8; }
+
+  tbody td {
+    padding: 13px 16px;
+    font-size: 13px;
+    color: var(--text-dark);
+  }
+
+  .plot-num {
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    font-size: 12px;
+    background: var(--mist);
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: var(--earth);
+  }
+
+  .owner-name { font-weight: 500; }
+  .owner-phone { font-size: 11px; color: var(--text-light); font-family: 'DM Mono', monospace; margin-top: 2px; }
+
+  .sqyd {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-mid);
+  }
+
+  .amount-cell {
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    font-size: 13px;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .status-badge.paid { background: var(--paid-bg); color: var(--paid); }
+  .status-badge.pending { background: var(--pending-bg); color: var(--pending); }
+  .status-badge.unknown { background: var(--unknown-bg); color: var(--unknown); }
+
+  .status-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .membership-check {
+    font-size: 14px;
+  }
+
+  .action-btn {
+    background: transparent;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 11px;
+    cursor: pointer;
+    color: var(--text-mid);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .action-btn:hover { background: var(--earth); color: #fff; border-color: var(--earth); }
+  .action-btn.remind { border-color: rgba(196,112,74,0.3); color: var(--terracotta); }
+  .action-btn.remind:hover { background: var(--terracotta); color: #fff; border-color: var(--terracotta); }
+
+  .table-footer {
+    padding: 14px 24px;
+    border-top: 1px solid var(--mist);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #FAFAF8;
+  }
+
+  .table-footer-text { font-size: 12px; color: var(--text-light); }
+
+  .pagination { display: flex; gap: 4px; }
+
+  .page-btn {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: transparent;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-mid);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .page-btn.active { background: var(--earth); color: #fff; border-color: var(--earth); }
+  .page-btn:hover:not(.active) { background: var(--mist); }
+
+  /* MODAL OVERLAY */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal {
+    background: #fff;
+    border-radius: 16px;
+    width: 480px;
+    max-width: 90vw;
+    overflow: hidden;
+    animation: modalIn 0.3s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    background: linear-gradient(135deg, var(--earth-dark), var(--earth));
+    padding: 24px;
+    color: #fff;
+  }
+
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; }
+  .modal-subtitle { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+  .modal-body { padding: 24px; }
+
+  .reminder-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .reminder-stat {
+    background: var(--mist);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .reminder-stat-num { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; }
+  .reminder-stat-num.red { color: var(--terracotta); }
+  .reminder-stat-num.green { color: var(--paid); }
+  .reminder-stat-num.gold { color: var(--gold); }
+  .reminder-stat-label { font-size: 11px; color: var(--text-light); margin-top: 3px; }
+
+  .channel-select {
+    margin-bottom: 16px;
+  }
+
+  .channel-label { font-size: 12px; font-weight: 600; color: var(--text-mid); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  .channel-options { display: flex; gap: 8px; }
+
+  .channel-opt {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid rgba(0,0,0,0.08);
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+  }
+
+  .channel-opt.selected { border-color: var(--earth); background: rgba(45,74,62,0.06); color: var(--earth); }
+  .channel-opt .ch-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+
+  .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+
+  .modal-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .modal-btn-cancel { background: var(--mist); color: var(--text-mid); }
+  .modal-btn-send { background: var(--earth); color: #fff; }
+  .modal-btn-send:hover { background: var(--earth-light); transform: translateY(-1px); }
+
+  /* SUCCESS TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--earth-dark);
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 300;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--gold);
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ACTIVITY FEED - small section */
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px; /* reduced from 24px */
+  }
+
+  .activity-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(0,0,0,0.06);
+    animation: fadeUp 0.5s ease 0.4s both;
+  }
+
+  .activity-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--mist);
+    align-items: flex-start;
+  }
+
+  .activity-item:last-child { border-bottom: none; }
+
+  .activity-avatar {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  .activity-avatar.pay { background: var(--paid-bg); color: var(--paid); }
+  .activity-avatar.join { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .activity-avatar.photo { background: rgba(45,74,62,0.1); color: var(--earth); }
+
+  .activity-text { flex: 1; }
+  .activity-desc { font-size: 13px; color: var(--text-dark); line-height: 1.4; }
+  .activity-desc strong { font-weight: 600; }
+  .activity-time { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+  .activity-amount { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 600; color: var(--paid); }
+
+  /* Quick stats bar */
+  .quick-bar {
+    background: linear-gradient(135deg, var(--gold-pale), #FFF8E8);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 16px; /* reduced from 24px */
+    animation: fadeUp 0.5s ease 0.1s both;
+  }
+
+  .quick-bar-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--stone);
+    flex-shrink: 0;
+  }
+
+  .quick-stats { display: flex; gap: 32px; flex: 1; }
+
+  .quick-stat { }
+  .quick-stat-label { font-size: 11px; color: var(--stone); }
+  .quick-stat-value { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 500; color: var(--earth-dark); }
+
+  .divider { width: 1px; background: rgba(201,168,76,0.3); align-self: stretch; }
+
+  /* Overdue highlight */
+  .overdue-row td { background: rgba(196,112,74,0.04); }
+
+  /* Responsive tweaks for demo */
+  @media (max-width: 1200px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .middle-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-icon">🌿</div>
+      <div class="logo-text">PlotMate</div>
+    </div>
+    <div class="logo-tagline">Digital tool for plot owners</div>
+  </div>
+
+  <div class="venture-badge">
+    <div class="venture-label">Active Venture</div>
+    <div class="venture-name">Green Aero View Layout</div>
+    <div class="venture-location">📍 Tukkuguda, Hyderabad, Telangana</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Overview</div>
+    <div class="nav-item active">
+      <span class="nav-icon">⬛</span> Dashboard
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">🗺</span> Plot Map
+    </div>
+
+    <div class="nav-section-label">Management</div>
+    <div class="nav-item">
+      <span class="nav-icon">👥</span> Plot Owners
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">💰</span> Payments
+      <span class="nav-badge">61</span>
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">🔔</span> Reminders
+      <span class="nav-badge">8</span>
+    </div>
+
+    <div class="nav-section-label">Community</div>
+    <div class="nav-item">
+      <span class="nav-icon">📸</span> Site Photos
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">📢</span> Announcements
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">📄</span> Documents
+    </div>
+
+    <div class="nav-section-label">Settings</div>
+    <div class="nav-item">
+      <span class="nav-icon">⚙️</span> Settings
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-pill">
+      <div class="user-avatar">RK</div>
+      <div class="user-info">
+        <div class="user-name">Ramesh Kumar</div>
+        <div class="user-role">Secretary</div>
+      </div>
+      <span style="color:rgba(255,255,255,0.3);font-size:16px;cursor:pointer;">⋯</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="page-title-wrap">
+      <div class="page-title">Dashboard</div>
+      <div class="page-subtitle">Maintenance FY 2024–25 · Last updated today at 11:42 AM</div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost">⬇ Export</button>
+      <button class="btn btn-ghost" onclick="showModal()">📤 Import Owners</button>
+      <button class="btn btn-gold" onclick="showReminderModal()">🔔 Send Reminders</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ALERT -->
+    <div class="alert-banner">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-text">
+        <div class="alert-title">61 plots have not paid maintenance fees for FY 2024–25</div>
+        <div class="alert-desc">₹3,96,450 is outstanding. Last bulk reminder was sent 14 days ago.</div>
+      </div>
+      <span class="alert-action" onclick="showReminderModal()">Send Reminder Now →</span>
+    </div>
+
+    <!-- QUICK BAR -->
+    <div class="quick-bar">
+      <div class="quick-bar-title">FY 2024–25 Snapshot</div>
+      <div class="quick-stats">
+        <div class="quick-stat">
+          <div class="quick-stat-label">Fee per Sq Yd</div>
+          <div class="quick-stat-value">₹30</div>
+        </div>
+        <div class="divider"></div>
+        <div class="quick-stat">
+          <div class="quick-stat-label">Total Target</div>
+          <div class="quick-stat-value">₹18.06L</div>
+        </div>
+        <div class="divider"></div>
+        <div class="quick-stat">
+          <div class="quick-stat-label">Collected</div>
+          <div class="quick-stat-value">₹9.71L</div>
+        </div>
+        <div class="divider"></div>
+        <div class="quick-stat">
+          <div class="quick-stat-label">Membership One-Time</div>
+          <div class="quick-stat-value">₹1,000</div>
+        </div>
+        <div class="divider"></div>
+        <div class="quick-stat">
+          <div class="quick-stat-label">Members Enrolled</div>
+          <div class="quick-stat-value">112 / 280</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS GRID -->
+    <div class="stats-grid">
+      <div class="stat-card total">
+        <div class="stat-icon">🏘</div>
+        <div class="stat-label">Total Plots</div>
+        <div class="stat-value">280</div>
+        <div class="stat-sub">Avg size <strong>215 sq yds</strong></div>
+      </div>
+      <div class="stat-card paid">
+        <div class="stat-icon">✅</div>
+        <div class="stat-label">Paid — FY 24–25</div>
+        <div class="stat-value">89</div>
+        <div class="stat-sub">of 150 known owners</div>
+        <div class="stat-progress"><div class="stat-progress-bar" style="width:59%"></div></div>
+      </div>
+      <div class="stat-card pending">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-label">Pending Payment</div>
+        <div class="stat-value">61</div>
+        <div class="stat-sub">₹3,96,450 outstanding</div>
+        <div class="stat-progress"><div class="stat-progress-bar" style="width:41%"></div></div>
+      </div>
+      <div class="stat-card unknown">
+        <div class="stat-icon">❓</div>
+        <div class="stat-label">Owner Unknown</div>
+        <div class="stat-value">130</div>
+        <div class="stat-sub">Plot details not captured</div>
+      </div>
+    </div>
+
+    <!-- MIDDLE ROW -->
+    <div class="middle-row">
+
+      <!-- COLLECTION CARD -->
+      <div class="collection-card">
+        <div class="collection-header">
+          <div>
+            <div class="collection-title">Maintenance Collection</div>
+            <div class="collection-year">FY 2024–25</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;">Collection Rate</div>
+            <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold-light);">53.7%</div>
+          </div>
+        </div>
+        <div class="collection-amount"><span>₹</span>9,71,550</div>
+        <div class="collection-target">of <strong>₹18,06,000</strong> annual target from all 280 plots</div>
+        <div class="collection-bar">
+          <div class="collection-bar-fill" id="collBar" style="width:0%"></div>
+        </div>
+        <div class="collection-breakdown">
+          <div class="breakdown-item">
+            <div class="breakdown-label">Collected</div>
+            <div class="breakdown-value">₹9,71,550</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-label">Outstanding</div>
+            <div class="breakdown-value" style="color:var(--terracotta-light);">₹3,96,450</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-label">Unknown Plots</div>
+            <div class="breakdown-value" style="color:rgba(255,255,255,0.4);">₹8,37,850</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REMINDERS -->
+      <div class="reminders-card">
+        <div class="card-header">
+          <div class="card-title">⏰ Pending Reminders</div>
+          <div class="card-action">View all →</div>
+        </div>
+
+        <div class="reminder-item">
+          <div class="reminder-dot overdue"></div>
+          <div class="reminder-text">
+            <div class="reminder-name">Plot 47 — Suresh Reddy</div>
+            <div class="reminder-detail">Overdue by 42 days · 200 sq yds</div>
+          </div>
+          <div class="reminder-amount">₹6,000</div>
+        </div>
+        <div class="reminder-item">
+          <div class="reminder-dot overdue"></div>
+          <div class="reminder-text">
+            <div class="reminder-name">Plot 112 — Anita Sharma</div>
+            <div class="reminder-detail">Overdue by 38 days · 250 sq yds</div>
+          </div>
+          <div class="reminder-amount">₹7,500</div>
+        </div>
+        <div class="reminder-item">
+          <div class="reminder-dot overdue"></div>
+          <div class="reminder-text">
+            <div class="reminder-name">Plot 89 — Venkat Rao</div>
+            <div class="reminder-detail">Overdue by 31 days · 180 sq yds</div>
+          </div>
+          <div class="reminder-amount">₹5,400</div>
+        </div>
+        <div class="reminder-item">
+          <div class="reminder-dot due-soon"></div>
+          <div class="reminder-text">
+            <div class="reminder-name">Plot 203 — Kavitha Nair</div>
+            <div class="reminder-detail">Due in 5 days · 215 sq yds</div>
+          </div>
+          <div class="reminder-amount">₹6,450</div>
+        </div>
+        <div class="reminder-item">
+          <div class="reminder-dot scheduled"></div>
+          <div class="reminder-text">
+            <div class="reminder-name">58 more owners pending</div>
+            <div class="reminder-detail">Scheduled reminder: Monday 9 AM</div>
+          </div>
+        </div>
+
+        <button class="send-reminder-btn" onclick="showReminderModal()">
+          🔔 Send Bulk Reminder to All 61 Pending
+        </button>
+      </div>
+    </div>
+
+    <!-- PLOT TABLE -->
+    <div class="table-card">
+      <div class="table-header">
+        <div>
+          <div class="table-title">Plot Owner Registry</div>
+          <div class="table-subtitle">150 known owners · 130 details pending · Sorted by payment status</div>
+        </div>
+        <div class="table-filters">
+          <div class="search-box">🔍 Search plot or owner...</div>
+          <button class="filter-chip active" onclick="setFilter(this,'all')">All</button>
+          <button class="filter-chip" onclick="setFilter(this,'paid')">✅ Paid</button>
+          <button class="filter-chip" onclick="setFilter(this,'pending')">⏳ Pending</button>
+          <button class="filter-chip" onclick="setFilter(this,'unknown')">❓ Unknown</button>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Plot No.</th>
+            <th>Owner</th>
+            <th>Size</th>
+            <th>Maint. Due</th>
+            <th>Membership</th>
+            <th>Status</th>
+            <th>Last Updated</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="overdue-row">
+            <td><span class="plot-num">P-047</span></td>
+            <td><div class="owner-name">Suresh Reddy</div><div class="owner-phone">+91 98765 43210</div></td>
+            <td><span class="sqyd">200 sqyd</span></td>
+            <td class="amount-cell" style="color:var(--terracotta)">₹6,000</td>
+            <td class="membership-check">✅</td>
+            <td><span class="status-badge pending"><span class="status-dot"></span>Pending</span></td>
+            <td style="font-size:12px;color:var(--text-light)">42 days ago</td>
+            <td><button class="action-btn remind" onclick="showToast('Reminder sent to Suresh Reddy via WhatsApp')">Remind</button></td>
+          </tr>
+          <tr class="overdue-row">
+            <td><span class="plot-num">P-112</span></td>
+            <td><div class="owner-name">Anita Sharma</div><div class="owner-phone">+91 87654 32109</div></td>
+            <td><span class="sqyd">250 sqyd</span></td>
+            <td class="amount-cell" style="color:var(--terracotta)">₹7,500</td>
+            <td class="membership-check">✅</td>
+            <td><span class="status-badge pending"><span class="status-dot"></span>Pending</span></td>
+            <td style="font-size:12px;color:var(--text-light)">38 days ago</td>
+            <td><button class="action-btn remind" onclick="showToast('Reminder sent to Anita Sharma via WhatsApp')">Remind</button></td>
+          </tr>
+          <tr>
+            <td><span class="plot-num">P-023</span></td>
+            <td><div class="owner-name">Madhavi Latha</div><div class="owner-phone">+91 76543 21098</div></td>
+            <td><span class="sqyd">180 sqyd</span></td>
+            <td class="amount-cell" style="color:var(--paid)">₹5,400</td>
+            <td class="membership-check">✅</td>
+            <td><span class="status-badge paid"><span class="status-dot"></span>Paid</span></td>
+            <td style="font-size:12px;color:var(--text-light)">3 days ago</td>
+            <td><button class="action-btn" onclick="showToast('Receipt sent to Madhavi Latha')">Receipt</button></td>
+          </tr>
+          <tr>
+            <td><span class="plot-num">P-156</span></td>
+            <td><div class="owner-name">Rajendra Prasad</div><div class="owner-phone">+91 65432 10987</div></td>
+            <td><span class="sqyd">215 sqyd</span></td>
+            <td class="amount-cell" style="color:var(--paid)">₹6,450</td>
+            <td class="membership-check">❌</td>
+            <td><span class="status-badge paid"><span class="status-dot"></span>Paid</span></td>
+            <td style="font-size:12px;color:var(--text-light)">1 week ago</td>
+            <td><button class="action-btn" onclick="showToast('Receipt sent to Rajendra Prasad')">Receipt</button></td>
+          </tr>
+          <tr>
+            <td><span class="plot-num">P-089</span></td>
+            <td><div class="owner-name">Venkat Rao</div><div class="owner-phone">+91 54321 09876</div></td>
+            <td><span class="sqyd">180 sqyd</span></td>
+            <td class="amount-cell" style="color:var(--terracotta)">₹5,400</td>
+            <td class="membership-check">✅</td>
+            <td><span class="status-badge pending"><span class="status-dot"></span>Pending</span></td>
+            <td style="font-size:12px;color:var(--text-light)">31 days ago</td>
+            <td><button class="action-btn remind" onclick="showToast('Reminder sent to Venkat Rao via WhatsApp')">Remind</button></td>
+          </tr>
+          <tr>
+            <td><span class="plot-num">P-203</span></td>
+            <td><div class="owner-name">Kavitha Nair</div><div class="owner-phone">+91 43210 98765</div></td>
+            <td><span class="sqyd">215 sqyd</span></td>
+            <td class="amount-cell" style="color:var(--gold)">₹6,450</td>
+            <td class="membership-check">✅</td>
+            <td><span class="status-badge pending"><span class="status-dot"></span>Pending</span></td>
+            <td style="font-size:12px;color:var(--text-light)">5 days left</td>
+            <td><button class="action-btn remind" onclick="showToast('Reminder sent to Kavitha Nair via WhatsApp')">Remind</button></td>
+          </tr>
+          <tr style="opacity:0.6">
+            <td><span class="plot-num">P-178</span></td>
+            <td><div class="owner-name" style="color:var(--text-light);font-style:italic">Owner details pending</div><div class="owner-phone">—</div></td>
+            <td><span class="sqyd">200 sqyd</span></td>
+            <td class="amount-cell" style="color:var(--text-light)">₹6,000</td>
+            <td class="membership-check" style="opacity:0.4">—</td>
+            <td><span class="status-badge unknown"><span class="status-dot"></span>Unknown</span></td>
+            <td style="font-size:12px;color:var(--text-light)">—</td>
+            <td><button class="action-btn" onclick="showToast('Edit mode opened for Plot 178')">+ Add Owner</button></td>
+          </tr>
+          <tr>
+            <td><span class="plot-num">P-061</span></td>
+            <td><div class="owner-name">Srinivas Murthy</div><div class="owner-phone">+91 32109 87654</div></td>
+            <td><span class="sqyd">250 sqyd</span></td>
+            <td class="amount-cell" style="color:var(--paid)">₹7,500</td>
+            <td class="membership-check">✅</td>
+            <td><span class="status-badge paid"><span class="status-dot"></span>Paid</span></td>
+            <td style="font-size:12px;color:var(--text-light)">2 weeks ago</td>
+            <td><button class="action-btn" onclick="showToast('Receipt sent to Srinivas Murthy')">Receipt</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="table-footer">
+        <div class="table-footer-text">Showing 8 of 280 plots · <strong>89 paid · 61 pending · 130 unknown</strong></div>
+        <div class="pagination">
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <span style="padding:0 4px;color:var(--text-light);font-size:13px">…</span>
+          <button class="page-btn">35</button>
+          <button class="page-btn">›</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM ROW -->
+    <div class="bottom-row">
+      <!-- ACTIVITY -->
+      <div class="activity-card">
+        <div class="card-header">
+          <div class="card-title">📋 Recent Activity</div>
+          <div class="card-action">View all →</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-avatar pay">₹</div>
+          <div class="activity-text">
+            <div class="activity-desc"><strong>Madhavi Latha</strong> paid maintenance for Plot 23</div>
+            <div class="activity-time">Today, 10:14 AM · UTR: HDFC2024031489</div>
+          </div>
+          <div class="activity-amount">+₹5,400</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-avatar pay">₹</div>
+          <div class="activity-text">
+            <div class="activity-desc"><strong>Srinivas Murthy</strong> paid maintenance for Plot 61</div>
+            <div class="activity-time">Yesterday, 3:42 PM · UTR: SBI2024031288</div>
+          </div>
+          <div class="activity-amount">+₹7,500</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-avatar join">👤</div>
+          <div class="activity-text">
+            <div class="activity-desc"><strong>Kavitha Nair</strong> joined as Plot 203 owner</div>
+            <div class="activity-time">2 days ago · Added by secretary</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-avatar photo">📸</div>
+          <div class="activity-text">
+            <div class="activity-desc">3 new site photos uploaded to gallery</div>
+            <div class="activity-time">3 days ago · Road laying progress</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-avatar pay">₹</div>
+          <div class="activity-text">
+            <div class="activity-desc"><strong>Rajendra Prasad</strong> paid maintenance for Plot 156</div>
+            <div class="activity-time">1 week ago · UTR: ICICI2024030977</div>
+          </div>
+          <div class="activity-amount">+₹6,450</div>
+        </div>
+      </div>
+
+      <!-- SITE UPDATES -->
+      <div class="activity-card">
+        <div class="card-header">
+          <div class="card-title">📸 Latest Site Updates</div>
+          <div class="card-action">+ Upload Photo</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          <div style="background:linear-gradient(135deg,#2D4A3E,#3D6357);border-radius:8px;height:90px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.6);font-size:12px;flex-direction:column;gap:4px">
+            <span style="font-size:24px">🏗</span>
+            Road Laying
+          </div>
+          <div style="background:linear-gradient(135deg,#4A3E2D,#6B5A3D);border-radius:8px;height:90px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.6);font-size:12px;flex-direction:column;gap:4px">
+            <span style="font-size:24px">💡</span>
+            Street Lights
+          </div>
+          <div style="background:linear-gradient(135deg,#2D3E4A,#3D5763);border-radius:8px;height:90px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.6);font-size:12px;flex-direction:column;gap:4px">
+            <span style="font-size:24px">🌳</span>
+            Plantation Drive
+          </div>
+          <div style="background:var(--mist);border-radius:8px;height:90px;display:flex;align-items:center;justify-content:center;color:var(--text-light);font-size:12px;flex-direction:column;gap:6px;border:2px dashed rgba(0,0,0,0.1);cursor:pointer" onclick="showToast('Photo upload opened')">
+            <span style="font-size:20px">+</span>
+            Add Photo
+          </div>
+        </div>
+        <div style="background:var(--mist);border-radius:8px;padding:12px 14px">
+          <div style="font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:4px">📢 Latest Announcement</div>
+          <div style="font-size:13px;color:var(--text-dark);line-height:1.5">Association meeting scheduled for <strong>March 23rd, 2025</strong> at 11 AM. All plot owners are requested to attend virtually or in person.</div>
+          <div style="font-size:11px;color:var(--text-light);margin-top:6px">Posted 2 days ago by Secretary</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- REMINDER MODAL -->
+<div class="modal-overlay" id="reminderModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Send Payment Reminders</div>
+      <div class="modal-subtitle">61 plot owners with pending maintenance fees</div>
+    </div>
+    <div class="modal-body">
+      <div class="reminder-stats">
+        <div class="reminder-stat">
+          <div class="reminder-stat-num red">61</div>
+          <div class="reminder-stat-label">Pending owners</div>
+        </div>
+        <div class="reminder-stat">
+          <div class="reminder-stat-num gold">₹3.96L</div>
+          <div class="reminder-stat-label">Outstanding</div>
+        </div>
+        <div class="reminder-stat">
+          <div class="reminder-stat-num green">89</div>
+          <div class="reminder-stat-label">Already paid</div>
+        </div>
+      </div>
+
+      <div class="channel-select">
+        <div class="channel-label">Send via</div>
+        <div class="channel-options">
+          <div class="channel-opt selected" onclick="selectChannel(this)">
+            <span class="ch-icon">💬</span>WhatsApp
+          </div>
+          <div class="channel-opt" onclick="selectChannel(this)">
+            <span class="ch-icon">📱</span>SMS
+          </div>
+          <div class="channel-opt" onclick="selectChannel(this)">
+            <span class="ch-icon">📧</span>Email
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--mist);border-radius:10px;padding:14px;font-size:13px;color:var(--text-mid);line-height:1.6;border-left:3px solid var(--earth)">
+        <div style="font-size:11px;font-weight:600;color:var(--earth);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px">Message Preview</div>
+        Dear <em>[Owner Name]</em>, your maintenance fee of ₹<em>[Amount]</em> for Plot <em>[Plot No.]</em> at Green Aero View Layout is pending for FY 2024–25. Please transfer to A/C: XXXX4521, IFSC: HDFC0001234. Reference your plot number. — Green Aero View Association 🏡
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-cancel" onclick="hideModal()">Cancel</button>
+        <button class="modal-btn modal-btn-send" onclick="sendReminders()">🔔 Send to 61 Owners</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="modal-overlay" id="importModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Import Plot Owners</div>
+      <div class="modal-subtitle">Upload a CSV to bulk-add owner details</div>
+    </div>
+    <div class="modal-body">
+      <div style="border:2px dashed rgba(0,0,0,0.12);border-radius:10px;padding:32px;text-align:center;margin-bottom:16px;cursor:pointer;background:var(--mist)" onclick="showToast('CSV upload dialog opened')">
+        <div style="font-size:32px;margin-bottom:8px">📂</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text-dark)">Drop your CSV file here</div>
+        <div style="font-size:12px;color:var(--text-light);margin-top:4px">or click to browse · Max 5MB</div>
+      </div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:16px">
+        📥 <span style="color:var(--earth);font-weight:500;cursor:pointer" onclick="showToast('Template CSV downloaded')">Download template CSV</span> with required columns: Plot No., Size, Owner Name, Phone, Email, Membership Paid
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-cancel" onclick="hideModal()">Cancel</button>
+        <button class="modal-btn modal-btn-send" style="background:var(--gold);color:var(--earth-dark)" onclick="showToast('CSV imported successfully · 47 new owners added')">Upload & Preview</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span>✅</span>
+  <span id="toastMsg">Action completed</span>
+</div>
+
+<script>
+  // Animate collection bar on load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('collBar').style.width = '53.7%';
+    }, 400);
+  });
+
+  function showReminderModal() {
+    document.getElementById('reminderModal').classList.add('show');
+  }
+
+  function showModal() {
+    document.getElementById('importModal').classList.add('show');
+  }
+
+  function hideModal() {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('show'));
+  }
+
+  // Close modal on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) hideModal();
+    });
+  });
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  function sendReminders() {
+    hideModal();
+    setTimeout(() => showToast('Reminders sent to 61 owners via WhatsApp ✓'), 300);
+  }
+
+  function selectChannel(el) {
+    document.querySelectorAll('.channel-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function setFilter(el, type) {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    showToast(`Showing ${type === 'all' ? 'all plots' : type + ' plots'}`);
+  }
+
+  // Nav items
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', function() {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
