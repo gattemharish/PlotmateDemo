@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plotmate — My Plot</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --earth: #2D4A3E;
+    --earth-light: #3D6357;
+    --earth-dark: #1A2E26;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-pale: #F5E9C8;
+    --bg: #FAF7F0;
+    --card: #FFFFFF;
+    --border: rgba(0,0,0,0.08);
+    --surface: #F0EDE6;
+    --text: #1A1A1A;
+    --text-mid: #4A4A4A;
+    --text-soft: #8A8A8A;
+    --red: #C4704A;
+    --red-pale: #FDF0EA;
+    --green: #2D7A4F;
+    --green-pale: #E8F5EE;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding-bottom: 80px;
+  }
+
+  /* HERO HEADER */
+  .hero {
+    background: linear-gradient(135deg, var(--earth-dark) 0%, var(--earth) 100%);
+    padding: 20px 20px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      linear-gradient(to bottom, rgba(26,46,38,0.85), rgba(29,58,47,0.90)),
+      url('./assets/cover.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .hero-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-logo-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero-logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold-light);
+  }
+
+  .hero-action {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    color: #fff;
+  }
+
+  .hero-welcome {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 4px;
+  }
+
+  .hero-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .hero-venture {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* PLOT CARD - FLOATING */
+  .plot-card-container {
+    padding: 0 20px;
+    margin-top: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .plot-card {
+    background: linear-gradient(135deg, var(--gold-pale) 0%, #FFFBF0 100%);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border: 2px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .plot-card::before {
+    content: '🏡';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 120px;
+    opacity: 0.1;
+  }
+
+  .plot-badge {
+    background: var(--gold);
+    color: var(--earth-dark);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+
+  .plot-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--earth-dark);
+    margin-bottom: 8px;
+  }
+
+  .plot-details {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 16px;
+  }
+
+  .plot-detail-item {
+    flex: 1;
+  }
+
+  .plot-detail-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-soft);
+    margin-bottom: 4px;
+  }
+
+  .plot-detail-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--earth-dark);
+  }
+
+  /* STATUS INDICATOR */
+  .status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 10px;
+    margin-top: 16px;
+  }
+
+  .status-text {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .status-text.paid {
+    color: var(--green);
+  }
+
+  .status-text.pending {
+    color: var(--red);
+  }
+
+  .status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .status-badge.paid {
+    background: var(--green-pale);
+    color: var(--green);
+  }
+
+  .status-badge.pending {
+    background: var(--red-pale);
+    color: var(--red);
+  }
+
+  /* OVERDUE BANNER */
+  .overdue-banner {
+    background: linear-gradient(135deg, var(--red) 0%, #E8967A 100%);
+    padding: 16px 20px;
+    margin: 0 0 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .overdue-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .overdue-icon {
+    font-size: 32px;
+  }
+
+  .overdue-text {
+    flex: 1;
+  }
+
+  .overdue-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .overdue-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+  }
+
+  /* SECTIONS */
+  .section {
+    padding: 20px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-icon {
+    font-size: 24px;
+  }
+
+  /* PAYMENT CARD */
+  .payment-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .payment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+
+  .payment-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-soft);
+    margin-bottom: 4px;
+  }
+
+  .payment-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--earth-dark);
+  }
+
+  .payment-deadline {
+    text-align: right;
+  }
+
+  .payment-deadline-label {
+    font-size: 11px;
+    color: var(--text-soft);
+    margin-bottom: 4px;
+  }
+
+  .payment-deadline-date {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--red);
+  }
+
+  /* BANK DETAILS */
+  .bank-details {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .bank-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-mid);
+    margin-bottom: 12px;
+  }
+
+  .bank-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .bank-row:last-child {
+    border-bottom: none;
+  }
+
+  .bank-label {
+    font-size: 12px;
+    color: var(--text-soft);
+  }
+
+  .bank-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .copy-btn {
+    background: var(--earth);
+    color: #fff;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 8px;
+  }
+
+  /* PRIMARY BUTTON */
+  .btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, var(--earth) 0%, var(--earth-light) 100%);
+    color: #fff;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(45,74,62,0.3);
+    transition: transform 0.2s;
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  /* LIST ITEMS */
+  .list-item {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+  }
+
+  .list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .list-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .list-meta {
+    font-size: 11px;
+    color: var(--text-soft);
+  }
+
+  .list-amount {
+    font-family: 'DM Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .list-amount.positive {
+    color: var(--green);
+  }
+
+  .list-amount.negative {
+    color: var(--red);
+  }
+
+  /* PHOTO GRID */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .photo-item {
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 4/3;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    background: linear-gradient(135deg, var(--earth-dark) 0%, var(--earth) 100%);
+  }
+
+  .photo-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .photo-date {
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 2px;
+  }
+
+  /* ANNOUNCEMENT CARD */
+  .announcement-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-left: 4px solid var(--earth);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  .announcement-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--earth);
+    margin-bottom: 8px;
+  }
+
+  .announcement-text {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-mid);
+    margin-bottom: 8px;
+  }
+
+  .announcement-meta {
+    font-size: 11px;
+    color: var(--text-soft);
+  }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 8px 12px;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background 0.2s;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .nav-item.active {
+    background: rgba(45,74,62,0.08);
+  }
+
+  .nav-icon {
+    font-size: 24px;
+  }
+
+  .nav-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-mid);
+  }
+
+  .nav-item.active .nav-label {
+    color: var(--earth);
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.show {
+    display: flex;
+  }
+
+  .modal {
+    background: #fff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 420px;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    background: linear-gradient(135deg, var(--earth-dark), var(--earth));
+    padding: 20px;
+    color: #fff;
+  }
+
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .modal-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 4px;
+  }
+
+  .modal-body {
+    padding: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-mid);
+    margin-bottom: 8px;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--earth);
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-cancel {
+    background: var(--surface);
+    color: var(--text-mid);
+  }
+
+  .btn-submit {
+    background: var(--earth);
+    color: #fff;
+  }
+
+  .info-box {
+    background: var(--green-pale);
+    border: 1px solid var(--green);
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--green);
+  }
+
+  /* TABLET/DESKTOP */
+  @media (min-width: 768px) {
+    body {
+      max-width: 480px;
+      margin: 0 auto;
+      box-shadow: 0 0 40px rgba(0,0,0,0.1);
+    }
+  }
+
+  /* HIDE SCREENS */
+  .screen {
+    display: none;
+  }
+
+  .screen.active {
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<!-- MY PLOT SCREEN -->
+<div class="screen active" id="myplotScreen">
+  
+  <!-- HERO HEADER -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-header">
+        <div class="hero-logo">
+          <div class="hero-logo-icon">
+            <img src="./assets/logo.jpg" alt="Plotmate">
+          </div>
+          <div class="hero-logo-text">Plotmate</div>
+        </div>
+        <button class="hero-action" onclick="alert('Profile & Settings')">⚙️</button>
+      </div>
+      <div class="hero-welcome">Welcome back,</div>
+      <div class="hero-name">Suresh Reddy</div>
+      <div class="hero-venture">📍 Green Aero View, Tukkuguda</div>
+    </div>
+  </div>
+
+  <!-- OVERDUE BANNER (show only if overdue) -->
+  <div class="overdue-banner">
+    <div class="overdue-content">
+      <div class="overdue-icon">⚠️</div>
+      <div class="overdue-text">
+        <div class="overdue-title">Payment Overdue</div>
+        <div class="overdue-desc">Your maintenance fee is overdue by 42 days</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLOT CARD -->
+  <div class="plot-card-container">
+    <div class="plot-card">
+      <div class="plot-badge">My Plot</div>
+      <div class="plot-number">Plot P-047</div>
+      <div class="plot-details">
+        <div class="plot-detail-item">
+          <div class="plot-detail-label">Plot Size</div>
+          <div class="plot-detail-value">200 sqyd</div>
+        </div>
+        <div class="plot-detail-item">
+          <div class="plot-detail-label">Phase</div>
+          <div class="plot-detail-value">Phase 2</div>
+        </div>
+      </div>
+      <div class="status-row">
+        <div class="status-text pending">₹6,000 Pending</div>
+        <div class="status-badge pending">Overdue</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT SECTION -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">💳</span>
+      Payment Due
+    </div>
+
+    <div class="payment-card">
+      <div class="payment-header">
+        <div>
+          <div class="payment-label">Maintenance Fee</div>
+          <div class="payment-amount">₹6,000</div>
+        </div>
+        <div class="payment-deadline">
+          <div class="payment-deadline-label">Deadline</div>
+          <div class="payment-deadline-date">Mar 31, 2025</div>
+        </div>
+      </div>
+
+      <div class="bank-details">
+        <div class="bank-title">Association Bank Details</div>
+        <div class="bank-row">
+          <div class="bank-label">Account Number</div>
+          <div>
+            <span class="bank-value">XXXX XXXX 4521</span>
+            <button class="copy-btn" onclick="copyText('XXXX45210001234521')">Copy</button>
+          </div>
+        </div>
+        <div class="bank-row">
+          <div class="bank-label">IFSC Code</div>
+          <div>
+            <span class="bank-value">HDFC0001234</span>
+            <button class="copy-btn" onclick="copyText('HDFC0001234')">Copy</button>
+          </div>
+        </div>
+        <div class="bank-row">
+          <div class="bank-label">Payment Reference</div>
+          <div>
+            <span class="bank-value">P047-2425</span>
+            <button class="copy-btn" onclick="copyText('P047-2425')">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="openPaymentModal()">
+        <span>💳</span>
+        Pay Now
+      </button>
+    </div>
+
+    <!-- PAYMENT HISTORY -->
+    <div style="margin-top:24px">
+      <div style="font-size:16px;font-weight:600;margin-bottom:12px">Payment History</div>
+      
+      <div class="list-item">
+        <div class="list-header">
+          <div>
+            <div class="list-title">Maintenance Fee — FY 2023-24</div>
+            <div class="list-meta">Paid on Apr 15, 2024</div>
+          </div>
+          <div class="list-amount positive">₹5,400</div>
+        </div>
+      </div>
+
+      <div class="list-item">
+        <div class="list-header">
+          <div>
+            <div class="list-title">Membership Fee</div>
+            <div class="list-meta">Paid on Jan 10, 2022</div>
+          </div>
+          <div class="list-amount positive">₹1,000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TREASURY SCREEN -->
+<div class="screen" id="treasuryScreen">
+  <div class="hero" style="padding-bottom:40px">
+    <div class="hero-content">
+      <div class="hero-header">
+        <div class="hero-logo">
+          <div class="hero-logo-icon">
+            <img src="./assets/logo.jpg" alt="Plotmate">
+          </div>
+          <div class="hero-logo-text">Plotmate</div>
+        </div>
+      </div>
+      <div class="hero-name">Association Treasury</div>
+      <div class="hero-venture">Financial transparency · FY 2024-25</div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:-20px">
+    <!-- Treasury Overview -->
+    <div style="background:linear-gradient(135deg,#1A3329 0%,#2D4A3E 100%);border-radius:16px;padding:24px;color:#fff;margin-bottom:20px;box-shadow:0 8px 24px rgba(0,0,0,0.12)">
+      <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.4);margin-bottom:8px">Current Balance</div>
+      <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:700;margin-bottom:16px">₹7,85,240</div>
+      
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+        <div style="background:rgba(255,255,255,0.08);padding:14px;border-radius:10px">
+          <div style="font-size:10px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px">Collected</div>
+          <div style="font-family:'DM Mono',monospace;font-size:18px;font-weight:700">₹10.83L</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);padding:14px;border-radius:10px">
+          <div style="font-size:10px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px">Expenses</div>
+          <div style="font-family:'DM Mono',monospace;font-size:18px;font-weight:700;color:#E8967A">₹2.98L</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expense History -->
+    <div class="section-title">
+      <span class="section-icon">💸</span>
+      Recent Expenses
+    </div>
+
+    <div class="list-item">
+      <div class="list-header">
+        <div>
+          <div class="list-title">Road Laying — Phase 2</div>
+          <div class="list-meta">Feb 10, 2025 · Sri Sai Infra</div>
+        </div>
+        <div class="list-amount negative">₹1,45,000</div>
+      </div>
+    </div>
+
+    <div class="list-item">
+      <div class="list-header">
+        <div>
+          <div class="list-title">Street Light Installation</div>
+          <div class="list-meta">Jan 28, 2025 · Bright Solutions</div>
+        </div>
+        <div class="list-amount negative">₹68,500</div>
+      </div>
+    </div>
+
+    <div class="list-item">
+      <div class="list-header">
+        <div>
+          <div class="list-title">Compound Wall Repair</div>
+          <div class="list-meta">Jan 15, 2025 · RK Constructions</div>
+        </div>
+        <div class="list-amount negative">₹42,800</div>
+      </div>
+    </div>
+
+    <div class="list-item">
+      <div class="list-header">
+        <div>
+          <div class="list-title">Plantation Drive</div>
+          <div class="list-meta">Dec 20, 2024 · Green Hyderabad</div>
+        </div>
+        <div class="list-amount negative">₹18,500</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHOTOS SCREEN -->
+<div class="screen" id="photosScreen">
+  <div class="hero" style="padding-bottom:40px">
+    <div class="hero-content">
+      <div class="hero-header">
+        <div class="hero-logo">
+          <div class="hero-logo-icon">
+            <img src="./assets/logo.jpg" alt="Plotmate">
+          </div>
+          <div class="hero-logo-text">Plotmate</div>
+        </div>
+      </div>
+      <div class="hero-name">Site Photos</div>
+      <div class="hero-venture">Construction progress updates</div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:-20px">
+    <div class="photo-grid">
+      <div class="photo-item">
+        <div class="photo-placeholder">🚧</div>
+        <div class="photo-label">
+          Road Laying
+          <div class="photo-date">3 days ago</div>
+        </div>
+      </div>
+      <div class="photo-item">
+        <div class="photo-placeholder">💡</div>
+        <div class="photo-label">
+          Street Lights
+          <div class="photo-date">1 week ago</div>
+        </div>
+      </div>
+      <div class="photo-item">
+        <div class="photo-placeholder">🌳</div>
+        <div class="photo-label">
+          Plantation
+          <div class="photo-date">2 weeks ago</div>
+        </div>
+      </div>
+      <div class="photo-item">
+        <div class="photo-placeholder">🧱</div>
+        <div class="photo-label">
+          Compound Wall
+          <div class="photo-date">1 month ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ANNOUNCEMENTS SCREEN -->
+<div class="screen" id="announcementsScreen">
+  <div class="hero" style="padding-bottom:40px">
+    <div class="hero-content">
+      <div class="hero-header">
+        <div class="hero-logo">
+          <div class="hero-logo-icon">
+            <img src="./assets/logo.jpg" alt="Plotmate">
+          </div>
+          <div class="hero-logo-text">Plotmate</div>
+        </div>
+      </div>
+      <div class="hero-name">Announcements</div>
+      <div class="hero-venture">Important updates & notices</div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:-20px">
+    <div class="announcement-card">
+      <div class="announcement-title">Association Meeting — March 23rd</div>
+      <div class="announcement-text">Quarterly meeting at 11 AM. Agenda: Road progress, drainage tender, pending fee collections. Google Meet link will be shared 1 hour before.</div>
+      <div class="announcement-meta">Posted 2 days ago by Secretary</div>
+    </div>
+
+    <div class="announcement-card">
+      <div class="announcement-title">Maintenance Fee Deadline — March 31st</div>
+      <div class="announcement-text">All maintenance fees for FY 2024–25 are due by March 31, 2025. Please transfer to the association account with your plot number as reference.</div>
+      <div class="announcement-meta">Posted 5 days ago by Secretary</div>
+    </div>
+
+    <div class="announcement-card">
+      <div class="announcement-title">Road Work Progress Update</div>
+      <div class="announcement-text">Phase 1 road laying completed. Phase 2 work begins next week. Site photos have been uploaded to the gallery.</div>
+      <div class="announcement-meta">Posted 2 weeks ago by Secretary</div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="showScreen('myplot')">
+    <div class="nav-icon">🏡</div>
+    <div class="nav-label">My Plot</div>
+  </div>
+  <div class="nav-item" onclick="showScreen('treasury')">
+    <div class="nav-icon">💰</div>
+    <div class="nav-label">Treasury</div>
+  </div>
+  <div class="nav-item" onclick="showScreen('photos')">
+    <div class="nav-icon">📸</div>
+    <div class="nav-label">Photos</div>
+  </div>
+  <div class="nav-item" onclick="showScreen('announcements')">
+    <div class="nav-icon">📢</div>
+    <div class="nav-label">Updates</div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Declare Payment</div>
+      <div class="modal-subtitle">Submit payment proof</div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Payment Date *</label>
+        <input type="date" class="form-input" id="paymentDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Amount Paid *</label>
+        <input type="number" class="form-input" value="6000" id="paymentAmount">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Transaction ID / UTR Number *</label>
+        <input type="text" class="form-input" placeholder="Enter UTR or transaction ID" id="paymentUTR">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Screenshot (Optional)</label>
+        <input type="file" class="form-input" accept="image/*" id="paymentScreenshot">
+      </div>
+
+      <div class="info-box">
+        ✓ Your payment will be verified by the secretary within 24 hours
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-cancel" onclick="closePaymentModal()">Cancel</button>
+        <button class="btn btn-submit" onclick="submitPayment()">Submit Payment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showScreen(screen) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screen + 'Screen').classList.add('active');
+    
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    event.target.closest('.nav-item').classList.add('active');
+    
+    window.scrollTo(0, 0);
+  }
+
+  function openPaymentModal() {
+    document.getElementById('paymentModal').classList.add('show');
+    // Set today's date
+    document.getElementById('paymentDate').valueAsDate = new Date();
+  }
+
+  function closePaymentModal() {
+    document.getElementById('paymentModal').classList.remove('show');
+  }
+
+  function submitPayment() {
+    const date = document.getElementById('paymentDate').value;
+    const amount = document.getElementById('paymentAmount').value;
+    const utr = document.getElementById('paymentUTR').value;
+
+    if (!date || !amount || !utr) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    closePaymentModal();
+    setTimeout(() => {
+      alert('✅ Payment submitted successfully!\n\nYour payment will be verified by the secretary within 24 hours. You\'ll receive a confirmation once approved.');
+    }, 300);
+  }
+
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('✓ Copied to clipboard');
+    });
+  }
+
+  // Close modal on outside click
+  window.onclick = function(event) {
+    if (event.target.classList.contains('modal-overlay')) {
+      event.target.classList.remove('show');
+    }
+  }
+</script>
+
+</body>
+</html>
