@@ -1,0 +1,2513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plotmate — Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --earth: #2D4A3E;
+    --earth-light: #3D6357;
+    --earth-dark: #1A2E26;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-pale: #F5E9C8;
+    --cream: #FAF7F0;
+    --terracotta: #C4704A;
+    --terracotta-light: #E8967A;
+    --terracotta-pale: #FDF0EA;
+    --mist: #F0EDE6;
+    --text-dark: #1A1A1A;
+    --text-mid: #4A4A4A;
+    --text-light: #8A8A8A;
+    --paid: #2D7A4F;
+    --paid-bg: #E8F5EE;
+    --pending: #C4704A;
+    --pending-bg: #FDF0EA;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 240px;
+    background: var(--earth-dark);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 28px 24px 24px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold-light);
+  }
+
+  .logo-tagline {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding-left: 46px;
+  }
+
+  .venture-badge {
+    margin: 16px 16px 0;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+
+  .venture-label {
+    font-size: 10px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+  }
+
+  .venture-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .sidebar-nav {
+    padding: 20px 12px;
+    flex: 1;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 4px;
+    color: rgba(255,255,255,0.55);
+    font-size: 14px;
+  }
+
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
+
+  .nav-item.active {
+    background: rgba(201,168,76,0.15);
+    color: var(--gold-light);
+    font-weight: 500;
+  }
+
+  .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+  .nav-badge {
+    margin-left: auto;
+    background: var(--terracotta);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+
+  /* MAIN */
+  .main {
+    margin-left: 240px;
+    min-height: 100vh;
+  }
+
+  .topbar {
+    background: var(--cream);
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    padding: 0 32px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .page-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; color: var(--earth-dark); }
+  .page-subtitle { font-size: 12px; color: var(--text-light); margin-top: 1px; }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-mid);
+    border: 1px solid rgba(0,0,0,0.12);
+  }
+
+  .btn-primary {
+    background: var(--earth);
+    color: #fff;
+  }
+
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--earth-dark);
+    font-weight: 600;
+  }
+
+  .content {
+    padding: 28px 32px;
+  }
+
+  /* ALERT BANNER */
+  .alert-banner {
+    background: linear-gradient(135deg, #FEF3E8, #FDE8D8);
+    border: 1px solid rgba(196,112,74,0.3);
+    border-left: 4px solid var(--terracotta);
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .alert-icon { font-size: 20px; }
+  .alert-text { flex: 1; }
+  .alert-title { font-size: 13px; font-weight: 600; color: var(--terracotta); }
+  .alert-desc { font-size: 12px; color: var(--text-mid); margin-top: 2px; }
+  .alert-action {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--terracotta);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  /* STATS */
+  .quick-bar {
+    background: linear-gradient(135deg, var(--gold-pale), #FFF8E8);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 24px;
+  }
+
+  .quick-bar-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-mid);
+  }
+
+  .quick-stats { display: flex; gap: 32px; flex: 1; }
+  .quick-stat-label { font-size: 11px; color: var(--text-mid); }
+  .quick-stat-value { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 500; color: var(--earth-dark); }
+
+  .divider { width: 1px; background: rgba(201,168,76,0.3); align-self: stretch; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-card.total .stat-value { color: var(--earth-dark); }
+  .stat-card.paid .stat-value { color: var(--paid); }
+  .stat-card.pending .stat-value { color: var(--terracotta); }
+  .stat-card.unknown .stat-value { color: var(--text-mid); }
+
+  .stat-sub { font-size: 12px; color: var(--text-light); }
+
+  /* QUICK ACTIONS */
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .action-card {
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .action-card:hover { transform: translateY(-2px); }
+
+  .action-icon { font-size: 32px; margin-bottom: 8px; }
+  .action-label { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .action-desc { font-size: 11px; color: rgba(255,255,255,0.8); }
+
+  /* ACTIVITY */
+  .activity-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.06);
+    padding: 20px;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .section-title { font-size: 16px; font-weight: 600; }
+  .section-link { font-size: 12px; color: var(--earth-mid); font-weight: 600; cursor: pointer; }
+
+  .activity-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .activity-item:last-child { border-bottom: none; }
+
+  .activity-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .activity-text { flex: 1; }
+  .activity-name { font-size: 13px; font-weight: 600; }
+  .activity-meta { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+  .activity-amount { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 700; color: var(--paid); }
+
+  /* COLLECTION CARD */
+  .collection-card {
+    background: linear-gradient(135deg, var(--earth-dark) 0%, var(--earth) 100%);
+    border-radius: 12px;
+    padding: 24px;
+    color: #fff;
+    margin-bottom: 24px;
+  }
+
+  .collection-title { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .collection-year { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: var(--gold-light); }
+  .collection-amount { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: #fff; margin: 16px 0 8px; }
+  .collection-target { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+  
+  .collection-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .collection-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 4px;
+    transition: width 1.5s ease;
+  }
+
+  /* TREASURY CARD */
+  .treasury-card {
+    background: linear-gradient(135deg, #1E3329 0%, #2A4A36 60%, #3D5E50 100%);
+    border-radius: 12px;
+    padding: 24px;
+    color: #fff;
+    margin-bottom: 24px;
+  }
+
+  .treasury-balance { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; margin: 16px 0; }
+  
+  .treasury-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .treasury-item {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 14px;
+  }
+
+  .treasury-item-label { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+  .treasury-item-value { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 500; }
+
+  .expense-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .expense-item:last-child { border-bottom: none; }
+  .expense-name { font-size: 13px; color: rgba(255,255,255,0.8); font-weight: 500; }
+  .expense-date { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+  .expense-amount { font-family: 'DM Mono', monospace; font-size: 14px; color: var(--terracotta-light); }
+
+  /* HIDE SCREENS BY DEFAULT */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* FILTER BUTTONS */
+  .filter-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid rgba(0,0,0,0.12);
+    background: #fff;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .filter-btn:hover { background: var(--mist); }
+  .filter-btn.active { background: var(--earth); color: #fff; border-color: var(--earth); }
+
+  /* UPLOAD ZONE HOVER */
+  #uploadZone:hover { background: rgba(45,74,62,0.05); border-color: var(--earth); }
+
+
+  /* Filter buttons */
+  .filter-btn {
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1.5px solid rgba(0,0,0,0.1);
+    background: #fff;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .filter-btn.active {
+    background: var(--earth);
+    color: #fff;
+    border-color: var(--earth);
+  }
+
+  .filter-btn:hover:not(.active) {
+    background: var(--mist);
+  }
+
+  /* ===== MOBILE RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    /* Hide sidebar on mobile */
+    .sidebar {
+      display: none;
+    }
+
+    /* Main content full width */
+    .main {
+      margin-left: 0;
+    }
+
+    /* Topbar adjustments */
+    .topbar {
+      height: auto;
+      padding: 12px 16px;
+      flex-wrap: wrap;
+    }
+
+    .page-title-wrap {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .page-title {
+      font-size: 18px;
+    }
+
+    .page-subtitle {
+      font-size: 11px;
+    }
+
+    .topbar-actions {
+      width: 100%;
+      justify-content: flex-start;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .topbar-actions .btn {
+      font-size: 12px;
+      padding: 8px 12px;
+    }
+
+    #treasuryYear, #registrySearch {
+      width: 100%;
+    }
+
+    /* Content padding */
+    .content {
+      padding: 16px;
+    }
+
+    /* Stats grid - 2 columns */
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stat-card {
+      padding: 16px;
+    }
+
+    .stat-value {
+      font-size: 26px;
+    }
+
+    /* Quick bar / Premium snapshot */
+    div[style*="background:linear-gradient(135deg,#1A3329"] {
+      padding: 20px 16px !important;
+    }
+
+    div[style*="grid-template-columns:repeat(4,1fr)"] {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 12px !important;
+    }
+
+    /* Treasury grid */
+    .treasury-grid {
+      grid-template-columns: 1fr !important;
+      gap: 12px;
+    }
+
+    /* Alert banner */
+    .alert-banner {
+      flex-direction: column;
+      padding: 12px;
+    }
+
+    /* Tables - scrollable */
+    .table-card, div[style*="overflow-x:auto"] table {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      min-width: 800px;
+    }
+
+    td, th {
+      white-space: nowrap;
+    }
+
+    /* Filter chips scrollable */
+    div[style*="display:flex;gap:8px"] {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Modals */
+    .modal {
+      width: 95vw;
+      max-height: 85vh;
+    }
+
+    .modal-body {
+      padding: 16px;
+    }
+
+    .modal-grid, .reminder-stats {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .channel-options {
+      flex-direction: column;
+    }
+
+    /* Collection card */
+    .collection-card {
+      padding: 20px 16px;
+    }
+
+    .collection-amount {
+      font-size: 28px;
+    }
+
+    .collection-breakdown {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Treasury card */
+    .treasury-card {
+      padding: 20px 16px;
+    }
+
+    .treasury-balance {
+      font-size: 32px;
+    }
+
+    /* Photo gallery - 2 columns */
+    div[style*="display:grid;grid-template-columns:repeat(4,1fr)"] {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    /* Registry search */
+    #registrySearch {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    /* Add padding for bottom nav */
+    body {
+      padding-bottom: 80px;
+    }
+
+    /* Bottom navigation */
+    .bottom-nav {
+      display: flex !important;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      padding: 8px 8px 12px;
+      z-index: 100;
+      box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+      justify-content: space-around;
+    }
+
+    .bn-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 6px;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background 0.2s;
+      position: relative;
+      text-decoration: none;
+      border: none;
+      background: transparent;
+    }
+
+    .bn-item.active {
+      background: rgba(45,74,62,0.08);
+    }
+
+    .bn-icon {
+      font-size: 22px;
+      position: relative;
+    }
+
+    .bn-badge {
+      position: absolute;
+      top: -4px;
+      right: -8px;
+      background: var(--pending);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 5px;
+      border-radius: 10px;
+    }
+
+    .bn-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-mid);
+    }
+
+    .bn-item.active .bn-label {
+      color: var(--earth);
+    }
+
+    /* Mobile More Menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+    }
+
+    .mobile-menu.show {
+      display: block;
+    }
+
+    .mobile-menu-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+    }
+
+    .mobile-menu-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      max-height: 70vh;
+      overflow-y: auto;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .mobile-menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 1;
+    }
+
+    .mobile-menu-items {
+      padding: 8px;
+    }
+
+    .mobile-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .mobile-menu-item:active {
+      background: rgba(0,0,0,0.04);
+    }
+
+    .mobile-menu-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(45,74,62,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .mobile-menu-text {
+      flex: 1;
+    }
+
+    .mobile-menu-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .mobile-menu-desc {
+      font-size: 11px;
+      color: var(--text-light);
+    }
+  }
+
+  /* Desktop - hide bottom nav */
+  @media (min-width: 769px) {
+    .bottom-nav {
+      display: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<script>
+  function handleFileUpload(event) {
+    const files = event.target.files;
+    if (files.length > 0) {
+      alert(`${files.length} file(s) selected for upload. In production, these would be uploaded to the server.`);
+    }
+  }
+
+  // Drag and drop
+  const uploadZone = document.getElementById('uploadZone');
+  if (uploadZone) {
+    uploadZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadZone.style.borderColor = 'var(--earth)';
+      uploadZone.style.background = 'var(--earth-pale)';
+    });
+
+    uploadZone.addEventListener('dragleave', () => {
+      uploadZone.style.borderColor = 'rgba(45,74,62,0.3)';
+      uploadZone.style.background = 'var(--mist)';
+    });
+
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.style.borderColor = 'rgba(45,74,62,0.3)';
+      uploadZone.style.background = 'var(--mist)';
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        alert(`${files.length} file(s) dropped for upload.`);
+      }
+    });
+  }
+
+  function filterRegistry(filter) {
+    // Update active button
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    // Filter rows
+    const rows = document.querySelectorAll('.registry-row');
+    rows.forEach(row => {
+      if (filter === 'all') {
+        row.style.display = '';
+      } else if (filter === 'paid' && row.classList.contains('paid')) {
+        row.style.display = '';
+      } else if (filter === 'pending' && row.classList.contains('pending')) {
+        row.style.display = '';
+      } else if (filter === 'unknown' && row.classList.contains('unknown')) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-icon">
+        <img src="./assets/logo.jpg" alt="Plotmate Logo">
+      </div>
+      <div class="logo-text">Plotmate</div>
+    </div>
+    <div class="logo-tagline">Digital tool for plot owners</div>
+  </div>
+
+  <div class="venture-badge">
+    <div class="venture-label">Active Venture</div>
+    <div class="venture-name">Green Aero View</div>
+    <div style="display:flex;align-items:flex-start;gap:4px;margin-top:6px">
+      <span style="font-size:11px;margin-top:1px">📍</span>
+      <div style="font-size:11px;color:rgba(255,255,255,0.5);line-height:1.4">Tukkuguda, Hyderabad, Telangana, 501359</div>
+    </div>
+    <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:6px">Active since Jan 2022</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,0.3);margin-bottom:8px;padding:0 12px;font-weight:600">Overview</div>
+    <div class="nav-item active" onclick="showScreen('dashboard')">
+      <span class="nav-icon">⬛</span> Dashboard
+    </div>
+    <div class="nav-item" onclick="showScreen('plotmap')">
+      <span class="nav-icon">🗺️</span> Plot Map
+    </div>
+
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,0.3);margin:20px 0 8px;padding:0 12px;font-weight:600">Management</div>
+    <div class="nav-item" onclick="showScreen('registry')">
+      <span class="nav-icon">👥</span> Plot Owners
+    </div>
+    <div class="nav-item" onclick="showScreen('treasury')">
+      <span class="nav-icon">💰</span> Treasury
+      <span class="nav-badge">61</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('reminders')">
+      <span class="nav-icon">🔔</span> Reminders
+      <span class="nav-badge">8</span>
+    </div>
+
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,0.3);margin:20px 0 8px;padding:0 12px;font-weight:600">Community</div>
+    <div class="nav-item" onclick="showScreen('community')">
+      <span class="nav-icon">📸</span> Site Photos
+    </div>
+    <div class="nav-item" onclick="showScreen('announcements')">
+      <span class="nav-icon">📢</span> Announcements
+    </div>
+    <div class="nav-item" onclick="showScreen('documents')">
+      <span class="nav-icon">📄</span> Documents
+    </div>
+
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,0.3);margin:20px 0 8px;padding:0 12px;font-weight:600">Settings</div>
+    <div class="nav-item" onclick="showScreen('settings')">
+      <span class="nav-icon">⚙️</span> Settings
+    </div>
+  </nav>
+
+  <!-- Admin Profile -->
+  <div style="margin-top:auto;padding:16px;border-top:1px solid rgba(201,168,76,0.2)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-light));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--earth-dark)">RK</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600;color:#fff">Ramesh Kumar</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.4)">Secretary</div>
+      </div>
+      <div onclick="logout()" style="cursor:pointer;padding:6px;border-radius:6px;transition:background 0.2s" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'" title="Logout">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD SCREEN -->
+<div class="screen active" id="dashboardScreen">
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Dashboard</div>
+        <div class="page-subtitle">Overview · Last updated today at 11:42 AM</div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="btn btn-ghost" onclick="exportDashboard()">⬇ Export</button>
+        <button class="btn btn-gold" onclick="openReminderModal()">🔔 Send Reminders</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- ALERT -->
+      <div class="alert-banner">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-text">
+          <div class="alert-title">61 plots have not paid maintenance fees for FY 2024–25</div>
+          <div class="alert-desc">₹3,96,450 is outstanding. Last bulk reminder sent 14 days ago.</div>
+        </div>
+        <span class="alert-action">Send Reminder →</span>
+      </div>
+
+      <!-- QUICK BAR -->
+      <div style="background:linear-gradient(135deg,#1A3329 0%,#2D4A3E 50%,#1E3A2F 100%);border-radius:16px;padding:28px 32px;margin-bottom:24px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.15)">
+        
+        <!-- Decorative background elements -->
+        <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(201,168,76,0.15) 0%,transparent 70%);border-radius:50%"></div>
+        <div style="position:absolute;bottom:-40px;left:-40px;width:150px;height:150px;background:radial-gradient(circle,rgba(45,122,79,0.1) 0%,transparent 70%);border-radius:50%"></div>
+        
+        <div style="position:relative;z-index:1">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px">
+            <div>
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.8px;color:rgba(255,255,255,0.4);margin-bottom:6px;font-weight:600">FY 2024–2025</div>
+              <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--gold-light)">Financial Snapshot</div>
+            </div>
+            <div style="background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);padding:8px 16px;border-radius:8px">
+              <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px">Collection Rate</div>
+              <div style="font-family:'DM Mono',monospace;font-size:20px;font-weight:700;color:var(--gold-light);margin-top:2px">53.7%</div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+            
+            <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px">
+              <div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Target</div>
+              <div style="font-family:'DM Mono',monospace;font-size:22px;font-weight:700;color:#fff;margin-bottom:4px">₹18.06L</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.35)">280 plots</div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px">
+              <div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Collected</div>
+              <div style="font-family:'DM Mono',monospace;font-size:22px;font-weight:700;color:var(--gold-light);margin-bottom:4px">₹9.71L</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.35)">89 paid</div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px">
+              <div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Expenses</div>
+              <div style="font-family:'DM Mono',monospace;font-size:22px;font-weight:700;color:var(--terracotta-light);margin-bottom:4px">₹2.98L</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.35)">YTD spent</div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px">
+              <div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Treasury</div>
+              <div style="font-family:'DM Mono',monospace;font-size:22px;font-weight:700;color:#6FD99A;margin-bottom:4px">₹7.85L</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.35)">Current balance</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card total">
+          <div class="stat-label">Total Plots</div>
+          <div class="stat-value">280</div>
+          <div class="stat-sub">Avg 215 sq yds</div>
+        </div>
+        <div class="stat-card paid">
+          <div class="stat-label">Paid</div>
+          <div class="stat-value">89</div>
+          <div class="stat-sub">of 150 known</div>
+        </div>
+        <div class="stat-card pending">
+          <div class="stat-label">Pending</div>
+          <div class="stat-value">61</div>
+          <div class="stat-sub">₹3.96L due</div>
+        </div>
+        <div class="stat-card unknown">
+          <div class="stat-label">Unknown</div>
+          <div class="stat-value">130</div>
+          <div class="stat-sub">No contact info</div>
+        </div>
+      </div>
+
+      <!-- RECENT ACTIVITY -->
+      <div class="activity-card">
+        <div class="section-header">
+          <div class="section-title">Recent Activity</div>
+          <div class="section-link">View all →</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background:var(--paid-bg)">💳</div>
+          <div class="activity-text">
+            <div class="activity-name">Madhavi Latha paid maintenance for Plot 23</div>
+            <div class="activity-meta">Today, 10:14 AM · UTR: HDFC2024031489</div>
+          </div>
+          <div class="activity-amount">+₹5,400</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background:var(--gold-pale)">👤</div>
+          <div class="activity-text">
+            <div class="activity-name">Kavitha Nair joined as Plot 203 owner</div>
+            <div class="activity-meta">Yesterday, 4:30 PM</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background:rgba(45,74,62,0.1)">📸</div>
+          <div class="activity-text">
+            <div class="activity-name">3 new site photos uploaded</div>
+            <div class="activity-meta">2 days ago · Road laying progress</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLOT MAP SCREEN -->
+<div class="screen" id="plotmapScreen">
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Plot Map</div>
+        <div class="page-subtitle">Visual layout of all 280 plots · Green Aero View</div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="btn btn-ghost" onclick="alert('Download high-resolution plot map as PDF')">⬇ Download Map</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,0.06);padding:24px">
+        <div style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:16px;font-weight:600">Green Aero View Layout</div>
+          <div style="display:flex;gap:16px;font-size:12px">
+            <div style="display:flex;align-items:center;gap:6px">
+              <div style="width:12px;height:12px;background:var(--paid);border-radius:3px"></div>
+              <span>Paid (89)</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <div style="width:12px;height:12px;background:var(--pending);border-radius:3px"></div>
+              <span>Pending (61)</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <div style="width:12px;height:12px;background:var(--text-mid);border-radius:3px"></div>
+              <span>Unknown (130)</span>
+            </div>
+          </div>
+        </div>
+        
+        <div style="border:1px solid rgba(0,0,0,0.06);border-radius:8px;overflow:hidden;background:var(--mist)">
+          <img src="./assets/plotmap.jpg" alt="Plot Map" style="width:100%;height:auto;display:block">
+        </div>
+
+        <div style="margin-top:16px;padding:16px;background:var(--mist);border-radius:8px;font-size:13px;color:var(--text-mid)">
+          <strong>💡 Tip:</strong> Click on any plot in the interactive version to view owner details, payment status, and send individual reminders. (Interactive features coming soon)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TREASURY SCREEN -->
+<div class="screen" id="treasuryScreen">
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Association Treasury</div>
+        <div class="page-subtitle">Financial management · Collections, expenses, and balance tracking</div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <select id="treasuryYear" style="padding:10px 16px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer" onchange="filterTreasuryByYear(this.value)">
+          <option value="2024-25">FY 2024–25</option>
+          <option value="2023-24">FY 2023–24</option>
+          <option value="2022-23">FY 2022–23</option>
+        </select>
+        <button class="btn btn-ghost" onclick="exportTreasury()">⬇ Export Report</button>
+        <button class="btn btn-primary" onclick="openAddExpenseModal()">+ Add Expense</button>
+      </div>
+    </div>
+
+    <div class="content">
+      
+      <!-- Treasury Overview Card -->
+      <div class="treasury-card" style="margin-bottom:24px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+          <div>
+            <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.4);margin-bottom:4px">Association Treasury</div>
+            <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--gold-light)">Financial Overview — FY 2024–25</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px;">Last Updated</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.5)">Feb 17, 2025</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:20px">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.4);margin-bottom:6px">Current Balance</div>
+          <div style="font-family:'Playfair Display',serif;font-size:42px;font-weight:700;color:#fff;line-height:1;margin-bottom:6px">₹7,85,240</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.5)">After all collections and expenses</div>
+        </div>
+
+        <div class="treasury-grid">
+          <div class="treasury-item">
+            <div class="treasury-item-label">Total Collected</div>
+            <div class="treasury-item-value">₹10,83,550</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:4px">Maintenance + Membership</div>
+          </div>
+          <div class="treasury-item">
+            <div class="treasury-item-label">Total Expenses</div>
+            <div class="treasury-item-value" style="color:var(--terracotta-light)">₹2,98,310</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:4px">YTD maintenance work</div>
+          </div>
+          <div class="treasury-item">
+            <div class="treasury-item-label">Pending Collection</div>
+            <div class="treasury-item-value" style="color:var(--gold-light)">₹3,96,450</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:4px">61 plots outstanding</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collections Section -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,0.06);padding:24px;margin-bottom:24px">
+        <div style="font-size:16px;font-weight:600;margin-bottom:16px">💰 Payment Collections</div>
+        
+        <div class="collection-card" style="margin-bottom:0">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+            <div>
+              <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.5);margin-bottom:4px">Maintenance Collection</div>
+              <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--gold-light)">FY 2024–25</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;">Collection Rate</div>
+              <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold-light)">53.7%</div>
+            </div>
+          </div>
+          <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:#fff;margin-bottom:8px">₹9,71,550</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:20px">of <strong>₹18,06,000</strong> annual target from all 280 plots</div>
+          <div class="collection-bar">
+            <div class="collection-bar-fill" id="treasuryCollBar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Expenses Section -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,0.06);overflow:hidden">
+        
+        <div style="padding:20px 24px;border-bottom:1px solid rgba(0,0,0,0.06);background:var(--mist);display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:16px;font-weight:600">💸 Expense History</div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <select style="padding:8px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif">
+              <option>All Categories</option>
+              <option>Road Work</option>
+              <option>Street Lights</option>
+              <option>Compound Wall</option>
+              <option>Plantation</option>
+              <option>Salaries</option>
+              <option>Other</option>
+            </select>
+            <button class="btn btn-ghost" style="padding:8px 14px;font-size:12px" onclick="openAddExpenseModal()">+ Add Expense</button>
+          </div>
+        </div>
+
+        <div>
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="background:var(--cream);border-bottom:1px solid rgba(0,0,0,0.06)">
+                <th style="padding:12px 24px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-mid)">Date</th>
+                <th style="padding:12px 24px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-mid)">Description</th>
+                <th style="padding:12px 24px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-mid)">Category</th>
+                <th style="padding:12px 24px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-mid)">Vendor</th>
+                <th style="padding:12px 24px;text-align:right;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-mid)">Amount</th>
+                <th style="padding:12px 24px;text-align:center;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-mid)">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr style="border-bottom:1px solid rgba(0,0,0,0.04)" class="expense-row" data-year="2024-25">
+                <td style="padding:14px 24px">
+                  <div style="font-size:13px;font-weight:500">Feb 10, 2025</div>
+                </td>
+                <td style="padding:14px 24px">
+                  <div style="font-size:13px;font-weight:600;color:var(--text-dark)">Road Laying — Phase 2 (Plots 101–200)</div>
+                  <div style="font-size:11px;color:var(--text-light);margin-top:2px">Concrete road laying work</div>
+                </td>
+                <td style="padding:14px 24px">
+                  <span style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(45,74,62,0.1);color:var(--earth)">Road Work</span>
+                </td>
+                <td style="padding:14px 24px">
+                  <div style="font-size:12px">Sri Sai Infra</div>
+                </td>
+                <td style="padding:14px 24px;text-align:right">
+                  <div style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--terracotta)">₹1,45,000</div>
+                </td>
+                <td style="padding:14px 24px;text-align:center">
+                  <button style="background:transparent;border:1px solid rgba(0,0,0,0.1);padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;color:var(--text-mid)">View</button>
+                </td>
+              </tr>
+
+              <tr style="border-bottom:1px solid rgba(0,0,0,0.04)" class="expense-row" data-year="2024-25">
+                <td style="padding:14px 24px">
+                  <div style="font-size:13px;font-weight:500">Jan 28, 2025</div>
+                </td>
+                <td style="padding:14px 24px">
+                  <div style="font-size:13px;font-weight:600;color:var(--text-dark)">Street Light Installation (80 units)</div>
+                  <div style="font-size:11px;color:var(--text-light);margin-top:2px">LED street lights with poles</div>
+                </td>
+                <td style="padding:14px 24px">
+                  <span style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(201,168,76,0.1);color:var(--gold)">Lighting</span>
+                </td>
+                <td style="padding:14px 24px">
+                  <div style="font-size:12px">Bright Solutions</div>
+                </td>
+                <td style="padding:14px 24px;text-align:right">
+                  <div style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--terracotta)">₹68,500</div>
+                </td>
+                <td style="padding:14px 24px;text-align:center">
+                  <button style="background:transparent;border:1px solid rgba(0,0,0,0.1);padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;color:var(--text-mid)">View</button>
+                </td>
+              </tr>
+
+              <tr style="border-bottom:1px solid rgba(0,0,0,0.04)" class="expense-row" data-year="2024-25">
+                <td style="padding:14px 24px">
+                  <div style="font-size:13px;font-weight:500">Jan 15, 2025</div>
+                </td>
+                <td style="padding:14px 24px">
+                  <div style="font-size:13px;font-weight:600;color:var(--text-dark)">Compound Wall Repair — North Side</div>
+                  <div style="font-size:11px;color:var(--text-light);margin-top:2px">Wall repair and painting</div>
+                </td>
+                <td style="padding:14px 24px">
+                  <span style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(196,112,74,0.1);color:var(--terracotta)">Compound Wall</span>
+                </td>
+                <td style="padding:14px 24px">
+                  <div style="font-size:12px">RK Constructions</div>
+                </td>
+                <td style="padding:14px 24px;text-align:right">
+                  <div style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--terracotta)">₹42,800</div>
+                </td>
+                <td style="padding:14px 24px;text-align:center">
+                  <button style="background:transparent;border:1px solid rgba(0,0,0,0.1);padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;color:var(--text-mid)">View</button>
+                </td>
+              </tr>
+
+              <tr style="border-bottom:1px solid rgba(0,0,0,0.04)" class="expense-row" data-year="2024-25">
+                <td style="padding:14px 24px">
+                  <div style="font-size:13px;font-weight:500">Dec 20, 2024</div>
+                </td>
+                <td style="padding:14px 24px">
+                  <div style="font-size:13px;font-weight:600;color:var(--text-dark)">Plantation Drive (150 trees)</div>
+                  <div style="font-size:11px;color:var(--text-light);margin-top:2px">Saplings and plantation work</div>
+                </td>
+                <td style="padding:14px 24px">
+                  <span style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(45,122,79,0.1);color:var(--paid)">Plantation</span>
+                </td>
+                <td style="padding:14px 24px">
+                  <div style="font-size:12px">Green Hyderabad</div>
+                </td>
+                <td style="padding:14px 24px;text-align:right">
+                  <div style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--terracotta)">₹18,500</div>
+                </td>
+                <td style="padding:14px 24px;text-align:center">
+                  <button style="background:transparent;border:1px solid rgba(0,0,0,0.1);padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;color:var(--text-mid)">View</button>
+                </td>
+              </tr>
+
+              <tr style="border-bottom:1px solid rgba(0,0,0,0.04)" class="expense-row" data-year="2024-25">
+                <td style="padding:14px 24px">
+                  <div style="font-size:13px;font-weight:500">Dec 01, 2024</div>
+                </td>
+                <td style="padding:14px 24px">
+                  <div style="font-size:13px;font-weight:600;color:var(--text-dark)">Security Guard Salary (3 months)</div>
+                  <div style="font-size:11px;color:var(--text-light);margin-top:2px">Oct - Dec 2024</div>
+                </td>
+                <td style="padding:14px 24px">
+                  <span style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(122,106,79,0.1);color:var(--text-mid)">Salaries</span>
+                </td>
+                <td style="padding:14px 24px">
+                  <div style="font-size:12px">Direct Payment</div>
+                </td>
+                <td style="padding:14px 24px;text-align:right">
+                  <div style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--terracotta)">₹23,510</div>
+                </td>
+                <td style="padding:14px 24px;text-align:center">
+                  <button style="background:transparent;border:1px solid rgba(0,0,0,0.1);padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;color:var(--text-mid)">View</button>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <div style="padding:14px 24px;border-top:1px solid rgba(0,0,0,0.06);background:#FAFAF8;display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:12px;color:var(--text-light)">Showing 5 expenses · Total: ₹2,98,310</div>
+          <button style="font-size:12px;color:var(--earth-mid);font-weight:600;background:transparent;border:none;cursor:pointer">View All Expenses →</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TREASURY SCREEN -->
+<div class="screen" id="treasuryScreen">
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Association Treasury</div>
+        <div class="page-subtitle">Financial overview and expense tracking · FY 2024–25</div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="btn btn-ghost">⬇ Export Report</button>
+        <button class="btn btn-primary">+ Add Expense</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="treasury-card">
+        <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.4)">Current Balance</div>
+        <div class="treasury-balance">₹7,85,240</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:20px">After all collections and expenses</div>
+
+        <div class="treasury-grid">
+          <div class="treasury-item">
+            <div class="treasury-item-label">Total Collected</div>
+            <div class="treasury-item-value">₹10,83,550</div>
+          </div>
+          <div class="treasury-item">
+            <div class="treasury-item-label">Total Expenses</div>
+            <div class="treasury-item-value" style="color:var(--terracotta-light)">₹2,98,310</div>
+          </div>
+          <div class="treasury-item">
+            <div class="treasury-item-label">Pending Collection</div>
+            <div class="treasury-item-value" style="color:var(--gold-light)">₹3,96,450</div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1)">
+          <div style="font-size:11px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:12px">Recent Expenses</div>
+          
+          <div class="expense-item">
+            <div>
+              <div class="expense-name">Road Laying — Phase 2 (Plots 101–200)</div>
+              <div class="expense-date">Feb 10, 2025 · Sri Sai Infra</div>
+            </div>
+            <div class="expense-amount">₹1,45,000</div>
+          </div>
+
+          <div class="expense-item">
+            <div>
+              <div class="expense-name">Street Light Installation (80 units)</div>
+              <div class="expense-date">Jan 28, 2025 · Bright Solutions</div>
+            </div>
+            <div class="expense-amount">₹68,500</div>
+          </div>
+
+          <div class="expense-item">
+            <div>
+              <div class="expense-name">Compound Wall Repair — North Side</div>
+              <div class="expense-date">Jan 15, 2025 · RK Constructions</div>
+            </div>
+            <div class="expense-amount">₹42,800</div>
+          </div>
+
+          <div class="expense-item">
+            <div>
+              <div class="expense-name">Plantation Drive (150 trees)</div>
+              <div class="expense-date">Dec 20, 2024 · Green Hyderabad</div>
+            </div>
+            <div class="expense-amount">₹18,500</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REMINDERS SCREEN -->
+<div class="screen" id="remindersScreen">
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Payment Reminders</div>
+        <div class="page-subtitle">Schedule and send personalized payment reminders</div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="btn btn-ghost" onclick="alert('Reminder history and logs')">📜 View History</button>
+        <button class="btn btn-gold" onclick="openReminderModal()">🔔 Send Now</button>
+      </div>
+    </div>
+
+    <div class="content">
+      
+      <!-- Reminder Stats -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px">
+        <div style="background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,0.06);padding:20px">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:8px">Pending Reminders</div>
+          <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--terracotta)">61</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px">Owners need reminders</div>
+        </div>
+        <div style="background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,0.06);padding:20px">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:8px">Last Sent</div>
+          <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--text-mid)">14</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px">Days ago</div>
+        </div>
+        <div style="background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,0.06);padding:20px">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:8px">Response Rate</div>
+          <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--paid)">67%</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:4px">Paid after reminder</div>
+        </div>
+      </div>
+
+      <!-- Message Preview -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,0.06);padding:24px;margin-bottom:24px">
+        <div style="font-size:16px;font-weight:600;margin-bottom:16px">📝 Message Preview</div>
+        
+        <div style="background:var(--mist);border-radius:12px;padding:20px;border-left:4px solid var(--earth)">
+          <div style="font-size:12px;color:var(--text-light);margin-bottom:8px">Sample message that will be sent:</div>
+          <div style="font-size:14px;color:var(--text-dark);line-height:1.6;font-family:'DM Sans',sans-serif">
+            Dear <strong>[Owner Name]</strong>,<br><br>
+            This is a reminder that your maintenance fee of <strong>₹[Amount]</strong> for <strong>Plot [Plot No.]</strong> at Green Aero View is pending for FY 2024–25.<br><br>
+            Please transfer the amount to:<br>
+            Account: XXXX XXXX 4521<br>
+            IFSC: HDFC0001234<br>
+            Reference: <strong>[Plot No.]-2425</strong><br><br>
+            For any queries, contact the association secretary.<br><br>
+            — Green Aero View Association
+          </div>
+        </div>
+
+        <div style="margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+          <div>
+            <label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Channel</label>
+            <select style="width:100%;padding:10px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif">
+              <option>WhatsApp</option>
+              <option>SMS</option>
+              <option>Email</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Send To</label>
+            <select style="width:100%;padding:10px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif">
+              <option>All Pending (61)</option>
+              <option>Overdue Only (42)</option>
+              <option>Custom Selection</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Schedule</label>
+            <select style="width:100%;padding:10px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif">
+              <option>Send Now</option>
+              <option>Schedule for Tomorrow 9 AM</option>
+              <option>Custom Date & Time</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming Scheduled Reminders -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,0.06);padding:24px">
+        <div style="font-size:16px;font-weight:600;margin-bottom:16px">📅 Scheduled Reminders</div>
+        
+        <div style="padding:16px;background:var(--gold-pale);border-radius:8px;border-left:4px solid var(--gold);margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text-dark)">Weekly Reminder — Pending Payments</div>
+              <div style="font-size:12px;color:var(--text-mid);margin-top:4px">Next: Monday, Feb 24, 2025 at 9:00 AM · WhatsApp · 61 recipients</div>
+            </div>
+            <button style="background:transparent;border:1px solid rgba(0,0,0,0.1);color:var(--text-mid);padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer">Edit</button>
+          </div>
+        </div>
+
+        <div style="padding:16px;background:var(--mist);border-radius:8px;border-left:4px solid var(--text-mid)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text-dark)">Final Reminder — Before Deadline</div>
+              <div style="font-size:12px;color:var(--text-mid);margin-top:4px">Scheduled: March 28, 2025 at 10:00 AM · SMS · All pending</div>
+            </div>
+            <button style="background:transparent;border:1px solid rgba(0,0,0,0.1);color:var(--text-mid);padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer">Edit</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- REGISTRY SCREEN -->
+<div class="screen" id="registryScreen">
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Plot Owner Registry</div>
+        <div class="page-subtitle">280 plots · 150 known owners · 130 details pending</div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <input type="text" id="registrySearch" placeholder="Search plots or owners..." style="padding:10px 16px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;width:260px" oninput="searchRegistry(this.value)">
+        <button class="btn btn-ghost" onclick="exportRegistry()">⬇ Export</button>
+        <button class="btn btn-ghost" onclick="importCSV()">📥 Import CSV</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,0.06);overflow:hidden">
+        
+        <!-- Filter tabs -->
+        <div style="padding:16px 24px;border-bottom:1px solid rgba(0,0,0,0.06);background:var(--mist)">
+          <div style="display:flex;gap:8px">
+            <button class="filter-btn active" onclick="filterRegistry('all')">All (280)</button>
+            <button class="filter-btn" onclick="filterRegistry('paid')">✅ Paid (89)</button>
+            <button class="filter-btn" onclick="filterRegistry('pending')">⏳ Pending (61)</button>
+            <button class="filter-btn" onclick="filterRegistry('unknown')">❓ Unknown (130)</button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="background:var(--cream);border-bottom:1px solid rgba(0,0,0,0.06)">
+                <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:1px">Plot</th>
+                <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:1px">Owner Details</th>
+                <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:1px">Size</th>
+                <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:1px">Amount Due</th>
+                <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:1px">Membership</th>
+                <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:1px">Status</th>
+                <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:1px">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr class="registry-row pending" style="border-bottom:1px solid rgba(0,0,0,0.04);background:rgba(196,112,74,0.02)">
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:600;font-size:13px;color:var(--earth-dark)">P-047</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Phase 2</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-weight:500;font-size:13px">Suresh Reddy</div>
+                  <div style="font-size:11px;color:var(--text-light);margin-top:2px;font-family:'DM Mono',monospace">+91 98765 43210</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-mid)">200 sq yds</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:13px;color:var(--terracotta)">₹6,000</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Overdue 42 days</div>
+                </td>
+                <td style="padding:14px 16px;text-align:center"><span style="font-size:14px">✅</span></td>
+                <td style="padding:14px 16px">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:var(--pending-bg);color:var(--pending)">
+                    <span style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>Pending
+                  </span>
+                </td>
+                <td style="padding:14px 16px">
+                  <button style="background:transparent;border:1px solid rgba(196,112,74,0.3);color:var(--terracotta);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">Remind</button>
+                </td>
+              </tr>
+
+              <tr class="registry-row pending" style="border-bottom:1px solid rgba(0,0,0,0.04);background:rgba(196,112,74,0.02)">
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:600;font-size:13px;color:var(--earth-dark)">P-112</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Phase 2</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-weight:500;font-size:13px">Anita Sharma</div>
+                  <div style="font-size:11px;color:var(--text-light);margin-top:2px;font-family:'DM Mono',monospace">+91 97654 32109</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-mid)">250 sq yds</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:13px;color:var(--terracotta)">₹7,500</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Overdue 38 days</div>
+                </td>
+                <td style="padding:14px 16px;text-align:center"><span style="font-size:14px">✅</span></td>
+                <td style="padding:14px 16px">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:var(--pending-bg);color:var(--pending)">
+                    <span style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>Pending
+                  </span>
+                </td>
+                <td style="padding:14px 16px">
+                  <button style="background:transparent;border:1px solid rgba(196,112,74,0.3);color:var(--terracotta);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">Remind</button>
+                </td>
+              </tr>
+
+              <tr class="registry-row paid" style="border-bottom:1px solid rgba(0,0,0,0.04)">
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:600;font-size:13px;color:var(--earth-dark)">P-023</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Phase 1</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-weight:500;font-size:13px">Madhavi Latha</div>
+                  <div style="font-size:11px;color:var(--text-light);margin-top:2px;font-family:'DM Mono',monospace">+91 96543 21098</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-mid)">180 sq yds</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:13px;color:var(--paid)">₹5,400</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Paid 3 days ago</div>
+                </td>
+                <td style="padding:14px 16px;text-align:center"><span style="font-size:14px">✅</span></td>
+                <td style="padding:14px 16px">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:var(--paid-bg);color:var(--paid)">
+                    <span style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>Paid
+                  </span>
+                </td>
+                <td style="padding:14px 16px">
+                  <button style="background:transparent;border:1px solid rgba(0,0,0,0.1);color:var(--text-mid);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">Receipt</button>
+                </td>
+              </tr>
+
+              <tr class="registry-row paid" style="border-bottom:1px solid rgba(0,0,0,0.04)">
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:600;font-size:13px;color:var(--earth-dark)">P-156</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Phase 2</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-weight:500;font-size:13px">Rajendra Prasad</div>
+                  <div style="font-size:11px;color:var(--text-light);margin-top:2px;font-family:'DM Mono',monospace">+91 95432 10987</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-mid)">215 sq yds</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:13px;color:var(--paid)">₹6,450</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Paid 1 week ago</div>
+                </td>
+                <td style="padding:14px 16px;text-align:center"><span style="font-size:14px">✅</span></td>
+                <td style="padding:14px 16px">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:var(--paid-bg);color:var(--paid)">
+                    <span style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>Paid
+                  </span>
+                </td>
+                <td style="padding:14px 16px">
+                  <button style="background:transparent;border:1px solid rgba(0,0,0,0.1);color:var(--text-mid);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">Receipt</button>
+                </td>
+              </tr>
+
+              <tr class="registry-row pending" style="border-bottom:1px solid rgba(0,0,0,0.04);background:rgba(196,112,74,0.02)">
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:600;font-size:13px;color:var(--earth-dark)">P-089</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Phase 1</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-weight:500;font-size:13px">Venkat Rao</div>
+                  <div style="font-size:11px;color:var(--text-light);margin-top:2px;font-family:'DM Mono',monospace">+91 94321 09876</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-mid)">180 sq yds</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:13px;color:var(--terracotta)">₹5,400</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Overdue 31 days</div>
+                </td>
+                <td style="padding:14px 16px;text-align:center"><span style="font-size:14px">✅</span></td>
+                <td style="padding:14px 16px">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:var(--pending-bg);color:var(--pending)">
+                    <span style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>Pending
+                  </span>
+                </td>
+                <td style="padding:14px 16px">
+                  <button style="background:transparent;border:1px solid rgba(196,112,74,0.3);color:var(--terracotta);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">Remind</button>
+                </td>
+              </tr>
+
+              <tr class="registry-row pending" style="border-bottom:1px solid rgba(0,0,0,0.04);background:rgba(196,112,74,0.02)">
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:600;font-size:13px;color:var(--earth-dark)">P-203</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Phase 2</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-weight:500;font-size:13px">Kavitha Nair</div>
+                  <div style="font-size:11px;color:var(--text-light);margin-top:2px;font-family:'DM Mono',monospace">+91 93210 98765</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-mid)">215 sq yds</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:13px;color:var(--terracotta)">₹6,450</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Due in 5 days</div>
+                </td>
+                <td style="padding:14px 16px;text-align:center"><span style="font-size:14px">—</span></td>
+                <td style="padding:14px 16px">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:var(--pending-bg);color:var(--pending)">
+                    <span style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>Pending
+                  </span>
+                </td>
+                <td style="padding:14px 16px">
+                  <button style="background:transparent;border:1px solid rgba(196,112,74,0.3);color:var(--terracotta);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">Remind</button>
+                </td>
+              </tr>
+
+              <tr class="registry-row unknown" style="border-bottom:1px solid rgba(0,0,0,0.04);opacity:0.6">
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:600;font-size:13px;color:var(--earth-dark)">P-178</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Phase 2</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-weight:500;font-size:13px;font-style:italic;color:var(--text-light)">Owner details pending</div>
+                  <div style="font-size:11px;color:var(--text-light);margin-top:2px">No contact info</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-mid)">200 sq yds</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:13px;color:var(--text-mid)">₹6,000</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Unknown status</div>
+                </td>
+                <td style="padding:14px 16px;text-align:center"><span style="font-size:14px">—</span></td>
+                <td style="padding:14px 16px">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(122,106,79,0.1);color:var(--text-mid)">
+                    <span style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>Unknown
+                  </span>
+                </td>
+                <td style="padding:14px 16px">
+                  <button style="background:transparent;border:1px solid rgba(0,0,0,0.1);color:var(--text-mid);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">+ Add Owner</button>
+                </td>
+              </tr>
+
+              <tr class="registry-row paid" style="border-bottom:1px solid rgba(0,0,0,0.04)">
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:600;font-size:13px;color:var(--earth-dark)">P-061</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Phase 1</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-weight:500;font-size:13px">Srinivas Murthy</div>
+                  <div style="font-size:11px;color:var(--text-light);margin-top:2px;font-family:'DM Mono',monospace">+91 92109 87654</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-mid)">250 sq yds</div>
+                </td>
+                <td style="padding:14px 16px">
+                  <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:13px;color:var(--paid)">₹7,500</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:2px">Paid 2 weeks ago</div>
+                </td>
+                <td style="padding:14px 16px;text-align:center"><span style="font-size:14px">✅</span></td>
+                <td style="padding:14px 16px">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:var(--paid-bg);color:var(--paid)">
+                    <span style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>Paid
+                  </span>
+                </td>
+                <td style="padding:14px 16px">
+                  <button style="background:transparent;border:1px solid rgba(0,0,0,0.1);color:var(--text-mid);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">Receipt</button>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Footer -->
+        <div style="padding:14px 24px;border-top:1px solid rgba(0,0,0,0.06);background:#FAFAF8;display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:12px;color:var(--text-light)">Showing 8 of 280 plots</div>
+          <div style="display:flex;gap:4px">
+            <button style="width:28px;height:28px;border-radius:6px;border:1px solid rgba(0,0,0,0.1);background:var(--earth);color:#fff;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center">1</button>
+            <button style="width:28px;height:28px;border-radius:6px;border:1px solid rgba(0,0,0,0.1);background:transparent;color:var(--text-mid);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center">2</button>
+            <button style="width:28px;height:28px;border-radius:6px;border:1px solid rgba(0,0,0,0.1);background:transparent;color:var(--text-mid);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center">3</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMMUNITY/SITE PHOTOS SCREEN -->
+<div class="screen" id="communityScreen">
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Site Photos</div>
+        <div class="page-subtitle">Upload and manage construction progress photos</div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">📸 Upload Photos</button>
+      </div>
+    </div>
+
+    <div class="content">
+      
+      <!-- Upload Section -->
+      <div style="background:#fff;border-radius:12px;padding:24px;border:1px solid rgba(0,0,0,0.06);margin-bottom:24px">
+        <div style="font-size:16px;font-weight:600;margin-bottom:16px">📸 Upload Site Photos</div>
+        
+        <div style="border:2px dashed rgba(45,74,62,0.3);border-radius:12px;padding:40px;text-align:center;background:var(--mist);cursor:pointer;transition:all 0.2s" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+          <div style="font-size:48px;margin-bottom:12px">📁</div>
+          <div style="font-size:14px;font-weight:600;color:var(--earth);margin-bottom:6px">Click to upload or drag and drop</div>
+          <div style="font-size:12px;color:var(--text-light)">JPG, PNG or HEIC · Max 10 MB per file</div>
+          <input type="file" id="fileInput" multiple accept="image/*" style="display:none" onchange="handleFileUpload(event)">
+        </div>
+
+        <div style="margin-top:16px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+          <div>
+            <label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Category</label>
+            <select style="width:100%;padding:10px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif">
+              <option>Road Work</option>
+              <option>Street Lights</option>
+              <option>Compound Wall</option>
+              <option>Plantation</option>
+              <option>Drainage</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Description (optional)</label>
+            <input type="text" placeholder="Phase 2 road laying progress..." style="width:100%;padding:10px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif">
+          </div>
+        </div>
+      </div>
+
+      <!-- Photo Gallery -->
+      <div style="background:#fff;border-radius:12px;padding:24px;border:1px solid rgba(0,0,0,0.06)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+          <div style="font-size:16px;font-weight:600">Site Photo Gallery</div>
+          <div style="font-size:12px;color:var(--text-light)">23 photos · Last updated 3 days ago</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+          
+          <div style="position:relative;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,0.06)">
+            <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#1A3326,#2E6045);display:flex;align-items:center;justify-content:center;font-size:40px">🚧</div>
+            <div style="position:absolute;top:8px;left:8px;background:var(--terracotta);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;text-transform:uppercase">New</div>
+            <div style="padding:12px;background:#fff">
+              <div style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:3px">Road Laying — Phase 2</div>
+              <div style="font-size:10px;color:var(--text-light)">3 days ago · 6 photos</div>
+            </div>
+          </div>
+
+          <div style="position:relative;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,0.06)">
+            <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#3A2A14,#7A5A28);display:flex;align-items:center;justify-content:center;font-size:40px">💡</div>
+            <div style="position:absolute;top:8px;left:8px;background:var(--terracotta);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;text-transform:uppercase">New</div>
+            <div style="padding:12px;background:#fff">
+              <div style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:3px">Street Lights Installed</div>
+              <div style="font-size:10px;color:var(--text-light)">1 week ago · 4 photos</div>
+            </div>
+          </div>
+
+          <div style="position:relative;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,0.06)">
+            <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#12283A,#245070);display:flex;align-items:center;justify-content:center;font-size:40px">🌳</div>
+            <div style="padding:12px;background:#fff">
+              <div style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:3px">Plantation Drive</div>
+              <div style="font-size:10px;color:var(--text-light)">2 weeks ago · 8 photos</div>
+            </div>
+          </div>
+
+          <div style="position:relative;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,0.06)">
+            <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#2A2040,#5A4A7A);display:flex;align-items:center;justify-content:center;font-size:40px">🧱</div>
+            <div style="padding:12px;background:#fff">
+              <div style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:3px">Compound Wall Work</div>
+              <div style="font-size:10px;color:var(--text-light)">1 month ago · 5 photos</div>
+            </div>
+          </div>
+
+          <div style="position:relative;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,0.06)">
+            <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#1E3A2A,#3A5E4A);display:flex;align-items:center;justify-content:center;font-size:40px">🚰</div>
+            <div style="padding:12px;background:#fff">
+              <div style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:3px">Drainage Installation</div>
+              <div style="font-size:10px;color:var(--text-light)">1 month ago · 7 photos</div>
+            </div>
+          </div>
+
+          <div style="position:relative;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,0.06)">
+            <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#2A1A10,#5A3A28);display:flex;align-items:center;justify-content:center;font-size:40px">🏗️</div>
+            <div style="padding:12px;background:#fff">
+              <div style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:3px">Gate Construction</div>
+              <div style="font-size:10px;color:var(--text-light)">2 months ago · 4 photos</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ANNOUNCEMENTS SCREEN -->
+<div class="screen" id="announcementsScreen">
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Announcements</div>
+        <div class="page-subtitle">Post notices and updates for all plot owners</div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="btn btn-primary" onclick="alert('Create new announcement')">📢 New Announcement</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div style="background:#fff;border-radius:12px;padding:24px;border:1px solid rgba(0,0,0,0.06)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+          <div style="font-size:16px;font-weight:600">📢 Recent Announcements</div>
+        </div>
+
+        <div style="border-left:3px solid var(--earth);padding:16px 20px;background:var(--mist);border-radius:8px;margin-bottom:12px">
+          <div style="font-size:13px;font-weight:600;color:var(--earth);margin-bottom:6px">Association Meeting — March 23rd, 2025</div>
+          <div style="font-size:12px;color:var(--text-mid);line-height:1.6;margin-bottom:8px">Quarterly meeting at 11 AM. Agenda: Road progress, drainage tender, pending fee collections. Google Meet link will be shared 1 hour before.</div>
+          <div style="font-size:11px;color:var(--text-light)">Posted 2 days ago by Secretary</div>
+        </div>
+
+        <div style="border-left:3px solid var(--terracotta);padding:16px 20px;background:var(--terracotta-pale);border-radius:8px;margin-bottom:12px">
+          <div style="font-size:13px;font-weight:600;color:var(--terracotta);margin-bottom:6px">Maintenance Fee Deadline — March 31st</div>
+          <div style="font-size:12px;color:var(--text-mid);line-height:1.6;margin-bottom:8px">All maintenance fees for FY 2024–25 are due by March 31, 2025. Please transfer to the association account with your plot number as reference.</div>
+          <div style="font-size:11px;color:var(--text-light)">Posted 5 days ago by Secretary</div>
+        </div>
+
+        <div style="border-left:3px solid var(--paid);padding:16px 20px;background:var(--paid-bg);border-radius:8px">
+          <div style="font-size:13px;font-weight:600;color:var(--paid);margin-bottom:6px">Road Work Progress Update</div>
+          <div style="font-size:12px;color:var(--text-mid);line-height:1.6;margin-bottom:8px">Phase 1 road laying completed. Phase 2 work begins next week. Site photos have been uploaded to the gallery.</div>
+          <div style="font-size:11px;color:var(--text-light)">Posted 2 weeks ago by Secretary</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="screen" id="communityScreen">
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Community</div>
+        <div class="page-subtitle">Site photos, announcements, and member updates</div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="btn btn-primary">📸 Upload Photos</button>
+        <button class="btn btn-primary">📢 New Announcement</button>
+      </div>
+    </div>
+
+    <div class="content">
+      
+      <!-- Upload Section -->
+      <div style="background:#fff;border-radius:12px;padding:24px;border:1px solid rgba(0,0,0,0.06);margin-bottom:24px">
+        <div style="font-size:16px;font-weight:600;margin-bottom:16px">📸 Upload Site Photos</div>
+        
+        <div style="border:2px dashed rgba(45,74,62,0.3);border-radius:12px;padding:40px;text-align:center;background:var(--mist);cursor:pointer;transition:all 0.2s" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+          <div style="font-size:48px;margin-bottom:12px">📁</div>
+          <div style="font-size:14px;font-weight:600;color:var(--earth);margin-bottom:6px">Click to upload or drag and drop</div>
+          <div style="font-size:12px;color:var(--text-light)">JPG, PNG or HEIC · Max 10 MB per file</div>
+          <input type="file" id="fileInput" multiple accept="image/*" style="display:none" onchange="handleFileUpload(event)">
+        </div>
+
+        <div style="margin-top:16px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+          <div>
+            <label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Category</label>
+            <select style="width:100%;padding:10px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif">
+              <option>Road Work</option>
+              <option>Street Lights</option>
+              <option>Compound Wall</option>
+              <option>Plantation</option>
+              <option>Drainage</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Description (optional)</label>
+            <input type="text" placeholder="Phase 2 road laying progress..." style="width:100%;padding:10px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif">
+          </div>
+        </div>
+      </div>
+
+      <!-- Photo Gallery -->
+      <div style="background:#fff;border-radius:12px;padding:24px;border:1px solid rgba(0,0,0,0.06)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+          <div style="font-size:16px;font-weight:600">Site Photo Gallery</div>
+          <div style="font-size:12px;color:var(--text-light)">23 photos · Last updated 3 days ago</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+          
+          <div style="position:relative;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,0.06)">
+            <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#1A3326,#2E6045);display:flex;align-items:center;justify-content:center;font-size:40px">🚧</div>
+            <div style="position:absolute;top:8px;left:8px;background:var(--terracotta);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;text-transform:uppercase">New</div>
+            <div style="padding:12px;background:#fff">
+              <div style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:3px">Road Laying — Phase 2</div>
+              <div style="font-size:10px;color:var(--text-light)">3 days ago · 6 photos</div>
+            </div>
+          </div>
+
+          <div style="position:relative;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,0.06)">
+            <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#3A2A14,#7A5A28);display:flex;align-items:center;justify-content:center;font-size:40px">💡</div>
+            <div style="position:absolute;top:8px;left:8px;background:var(--terracotta);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;text-transform:uppercase">New</div>
+            <div style="padding:12px;background:#fff">
+              <div style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:3px">Street Lights Installed</div>
+              <div style="font-size:10px;color:var(--text-light)">1 week ago · 4 photos</div>
+            </div>
+          </div>
+
+          <div style="position:relative;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,0.06)">
+            <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#12283A,#245070);display:flex;align-items:center;justify-content:center;font-size:40px">🌳</div>
+            <div style="padding:12px;background:#fff">
+              <div style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:3px">Plantation Drive</div>
+              <div style="font-size:10px;color:var(--text-light)">2 weeks ago · 8 photos</div>
+            </div>
+          </div>
+
+          <div style="position:relative;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,0.06)">
+            <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#2A2040,#5A4A7A);display:flex;align-items:center;justify-content:center;font-size:40px">🧱</div>
+            <div style="padding:12px;background:#fff">
+              <div style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:3px">Compound Wall Work</div>
+              <div style="font-size:10px;color:var(--text-light)">1 month ago · 5 photos</div>
+            </div>
+          </div>
+
+          <div style="position:relative;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,0.06)">
+            <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#1E3A2A,#3A5E4A);display:flex;align-items:center;justify-content:center;font-size:40px">🚰</div>
+            <div style="padding:12px;background:#fff">
+              <div style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:3px">Drainage Installation</div>
+              <div style="font-size:10px;color:var(--text-light)">1 month ago · 7 photos</div>
+            </div>
+          </div>
+
+          <div style="position:relative;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,0.06)">
+            <div style="aspect-ratio:4/3;background:linear-gradient(135deg,#2A1A10,#5A3A28);display:flex;align-items:center;justify-content:center;font-size:40px">🏗️</div>
+            <div style="padding:12px;background:#fff">
+              <div style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:3px">Gate Construction</div>
+              <div style="font-size:10px;color:var(--text-light)">2 months ago · 4 photos</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Announcements Section -->
+      <div style="background:#fff;border-radius:12px;padding:24px;border:1px solid rgba(0,0,0,0.06);margin-top:24px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+          <div style="font-size:16px;font-weight:600">📢 Recent Announcements</div>
+          <button class="btn btn-primary" style="font-size:12px;padding:8px 14px">+ New Announcement</button>
+        </div>
+
+        <div style="border-left:3px solid var(--earth);padding:16px 20px;background:var(--mist);border-radius:8px;margin-bottom:12px">
+          <div style="font-size:13px;font-weight:600;color:var(--earth);margin-bottom:6px">Association Meeting — March 23rd, 2025</div>
+          <div style="font-size:12px;color:var(--text-mid);line-height:1.6;margin-bottom:8px">Quarterly meeting at 11 AM. Agenda: Road progress, drainage tender, pending fee collections. Google Meet link will be shared 1 hour before.</div>
+          <div style="font-size:11px;color:var(--text-light)">Posted 2 days ago by Secretary</div>
+        </div>
+
+        <div style="border-left:3px solid var(--terracotta);padding:16px 20px;background:var(--terracotta-pale);border-radius:8px;margin-bottom:12px">
+          <div style="font-size:13px;font-weight:600;color:var(--terracotta);margin-bottom:6px">Maintenance Fee Deadline — March 31st</div>
+          <div style="font-size:12px;color:var(--text-mid);line-height:1.6;margin-bottom:8px">All maintenance fees for FY 2024–25 are due by March 31, 2025. Please transfer to the association account with your plot number as reference.</div>
+          <div style="font-size:11px;color:var(--text-light)">Posted 5 days ago by Secretary</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function showScreen(screenId) {
+    // Hide all screens
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    
+    // Show selected screen or placeholder
+    const targetScreen = document.getElementById(screenId + 'Screen');
+    if (targetScreen) {
+      targetScreen.classList.add('active');
+    } else {
+      // Show placeholder for unbuilt screens
+      alert(`${screenId.charAt(0).toUpperCase() + screenId.slice(1)} section coming soon!`);
+      return;
+    }
+    
+    // Update nav
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    event.target.closest('.nav-item').classList.add('active');
+
+    // Animate collection bar if on treasury screen
+    if (screenId === 'treasury') {
+      setTimeout(() => {
+        const bar = document.getElementById('treasuryCollBar');
+        if (bar) bar.style.width = '53.7%';
+      }, 200);
+    }
+  }
+
+  function filterRegistry(filter) {
+    // Update button states
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    // Filter rows
+    const rows = document.querySelectorAll('.registry-row');
+    rows.forEach(row => {
+      if (filter === 'all') {
+        row.style.display = '';
+      } else {
+        row.style.display = row.classList.contains(filter) ? '' : 'none';
+      }
+    });
+  }
+
+  function searchRegistry(query) {
+    const searchTerm = query.toLowerCase();
+    const rows = document.querySelectorAll('.registry-row');
+    
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(searchTerm) ? '' : 'none';
+    });
+  }
+
+  function handleFileUpload(event) {
+    const files = event.target.files;
+    if (files.length > 0) {
+      alert(`${files.length} file(s) selected for upload. In production, these would be uploaded to the server.`);
+    }
+  }
+
+  function importCSV() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv';
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        alert(`CSV file "${file.name}" selected. In production, this would:\n\n1. Parse the CSV file\n2. Validate plot owner data\n3. Import new owners to database\n4. Show import summary\n\nExpected CSV format:\nPlot No, Owner Name, Phone, Size (sqyd), Amount Due`);
+      }
+    };
+    input.click();
+  }
+
+  function exportRegistry() {
+    alert('Exporting registry data...\n\nIn production, this would generate a CSV file with:\n- All 280 plots\n- Owner details\n- Payment status\n- Contact information');
+  }
+
+  function exportDashboard() {
+    alert('Exporting dashboard report...\n\nIn production, this would generate a PDF report with:\n- Collection summary\n- Payment statistics\n- Recent activity\n- Treasury balance');
+  }
+
+  function openReminderModal() {
+    const modal = document.getElementById('reminderModal');
+    if (modal) {
+      modal.style.display = 'flex';
+    }
+  }
+
+  function closeReminderModal() {
+    const modal = document.getElementById('reminderModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  function sendReminders() {
+    const channel = document.querySelector('.reminder-channel.selected')?.dataset.channel || 'whatsapp';
+    closeReminderModal();
+    setTimeout(() => {
+      alert(`✅ Reminders sent via ${channel.toUpperCase()}!\n\n61 personalized messages sent to pending plot owners.\n\nEach message includes:\n- Owner name\n- Plot number\n- Exact amount due\n- Bank reference code\n- Payment deadline`);
+    }, 300);
+  }
+
+  function selectChannel(channel) {
+    document.querySelectorAll('.reminder-channel').forEach(c => c.classList.remove('selected'));
+    event.target.closest('.reminder-channel').classList.add('selected');
+  }
+
+  function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+      alert('Logging out...\n\nIn production, this would:\n1. Clear session data\n2. Redirect to login page\n3. Log the logout event');
+      // window.location.href = '/login';
+    }
+  }
+
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    if (menu) {
+      menu.classList.add('show');
+    }
+  }
+
+  function closeMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    if (menu) {
+      menu.classList.remove('show');
+    }
+  }
+
+  function filterTreasuryByYear(year) {
+    alert(`Filtering treasury data for FY ${year}...\n\nIn production, this would:\n1. Load collections for ${year}\n2. Load expenses for ${year}\n3. Update treasury balance\n4. Refresh all financial stats`);
+    
+    // Update collection bar animation
+    setTimeout(() => {
+      const bar = document.getElementById('treasuryCollBar');
+      if (bar) bar.style.width = '53.7%';
+    }, 300);
+  }
+
+  function exportTreasury() {
+    const year = document.getElementById('treasuryYear')?.value || '2024-25';
+    alert(`Exporting treasury report for FY ${year}...\n\nReport includes:\n• Collection summary\n• Expense breakdown by category\n• Vendor-wise expenses\n• Month-wise cash flow\n• Current balance sheet\n\nFormat: PDF with Excel attachment`);
+  }
+
+  function openAddExpenseModal() {
+    const modal = document.getElementById('addExpenseModal');
+    if (modal) {
+      modal.style.display = 'flex';
+    }
+  }
+
+  function closeAddExpenseModal() {
+    const modal = document.getElementById('addExpenseModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  function saveExpense() {
+    // Get form values
+    const date = document.getElementById('expenseDate')?.value;
+    const description = document.getElementById('expenseDescription')?.value;
+    const category = document.getElementById('expenseCategory')?.value;
+    const vendor = document.getElementById('expenseVendor')?.value;
+    const amount = document.getElementById('expenseAmount')?.value;
+
+    if (!date || !description || !amount) {
+      alert('Please fill in all required fields: Date, Description, and Amount');
+      return;
+    }
+
+    closeAddExpenseModal();
+    setTimeout(() => {
+      alert(`✅ Expense Added Successfully!\n\nDate: ${date}\nDescription: ${description}\nCategory: ${category}\nVendor: ${vendor}\nAmount: ₹${amount}\n\nThe expense has been recorded and treasury balance updated.`);
+      
+      // Reset form
+      document.getElementById('expenseDate').value = '';
+      document.getElementById('expenseDescription').value = '';
+      document.getElementById('expenseCategory').selectedIndex = 0;
+      document.getElementById('expenseVendor').value = '';
+      document.getElementById('expenseAmount').value = '';
+    }, 300);
+  }
+
+  // Close modal when clicking outside
+  window.onclick = function(event) {
+    const reminderModal = document.getElementById('reminderModal');
+    const expenseModal = document.getElementById('addExpenseModal');
+    
+    if (event.target === reminderModal) {
+      closeReminderModal();
+    }
+    if (event.target === expenseModal) {
+      closeAddExpenseModal();
+    }
+  }
+</script>
+
+<!-- REMINDER MODAL -->
+<div id="reminderModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;width:520px;max-width:90vw;overflow:hidden;animation:modalIn 0.3s ease">
+    
+    <div style="background:linear-gradient(135deg,var(--earth-dark),var(--earth));padding:24px;color:#fff">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600">Send Payment Reminders</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px">61 plot owners with pending maintenance fees</div>
+    </div>
+
+    <div style="padding:24px">
+      
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+        <div style="background:var(--mist);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--terracotta)">61</div>
+          <div style="font-size:11px;color:var(--text-light);margin-top:3px">Pending</div>
+        </div>
+        <div style="background:var(--mist);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--gold)">₹3.96L</div>
+          <div style="font-size:11px;color:var(--text-light);margin-top:3px">Outstanding</div>
+        </div>
+        <div style="background:var(--mist);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--paid)">89</div>
+          <div style="font-size:11px;color:var(--text-light);margin-top:3px">Already Paid</div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.8px">Send via</div>
+      <div style="display:flex;gap:8px;margin-bottom:20px">
+        <div class="reminder-channel selected" data-channel="whatsapp" onclick="selectChannel('whatsapp')" style="flex:1;padding:10px;border:2px solid var(--earth);border-radius:8px;cursor:pointer;text-align:center;transition:all 0.15s;font-size:13px;font-weight:500;background:rgba(45,74,62,0.06);color:var(--earth)">
+          <div style="font-size:20px;margin-bottom:4px">💬</div>WhatsApp
+        </div>
+        <div class="reminder-channel" data-channel="sms" onclick="selectChannel('sms')" style="flex:1;padding:10px;border:2px solid rgba(0,0,0,0.08);border-radius:8px;cursor:pointer;text-align:center;transition:all 0.15s;font-size:13px;font-weight:500;color:var(--text-mid)">
+          <div style="font-size:20px;margin-bottom:4px">📱</div>SMS
+        </div>
+        <div class="reminder-channel" data-channel="email" onclick="selectChannel('email')" style="flex:1;padding:10px;border:2px solid rgba(0,0,0,0.08);border-radius:8px;cursor:pointer;text-align:center;transition:all 0.15s;font-size:13px;font-weight:500;color:var(--text-mid)">
+          <div style="font-size:20px;margin-bottom:4px">📧</div>Email
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:20px">
+        <button onclick="closeReminderModal()" style="flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;background:var(--mist);color:var(--text-mid)">Cancel</button>
+        <button onclick="sendReminders()" style="flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;background:var(--earth);color:#fff">🔔 Send to 61 Owners</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ADD EXPENSE MODAL -->
+<div id="addExpenseModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;width:560px;max-width:90vw;overflow:hidden;animation:modalIn 0.3s ease">
+    
+    <div style="background:linear-gradient(135deg,var(--earth-dark),var(--earth));padding:24px;color:#fff">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600">Add New Expense</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px">Record a new expense for the association</div>
+    </div>
+
+    <div style="padding:24px">
+      
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:16px">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Date *</label>
+          <input type="date" id="expenseDate" style="width:100%;padding:10px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Amount (₹) *</label>
+          <input type="number" id="expenseAmount" placeholder="50000" style="width:100%;padding:10px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif">
+        </div>
+      </div>
+
+      <div style="margin-bottom:16px">
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Description *</label>
+        <input type="text" id="expenseDescription" placeholder="Road laying work - Phase 2" style="width:100%;padding:10px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif">
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:16px">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Category</label>
+          <select id="expenseCategory" style="width:100%;padding:10px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif">
+            <option>Road Work</option>
+            <option>Street Lights</option>
+            <option>Compound Wall</option>
+            <option>Plantation</option>
+            <option>Drainage</option>
+            <option>Salaries</option>
+            <option>Security</option>
+            <option>Maintenance</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Vendor</label>
+          <input type="text" id="expenseVendor" placeholder="Vendor name" style="width:100%;padding:10px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif">
+        </div>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--text-mid);margin-bottom:6px">Notes (optional)</label>
+        <textarea placeholder="Additional details about this expense..." style="width:100%;padding:10px 12px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;resize:vertical;min-height:60px"></textarea>
+      </div>
+
+      <div style="display:flex;gap:10px">
+        <button onclick="closeAddExpenseModal()" style="flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;background:var(--mist);color:var(--text-mid)">Cancel</button>
+        <button onclick="saveExpense()" style="flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;background:var(--earth);color:#fff">💾 Save Expense</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<style>
+  @keyframes modalIn {
+    from { opacity:0; transform:scale(0.95) translateY(10px); }
+    to { opacity:1; transform:scale(1) translateY(0); }
+  }
+  .reminder-channel.selected {
+    border-color: var(--earth) !important;
+    background: rgba(45,74,62,0.06) !important;
+    color: var(--earth) !important;
+  }
+</style>
+
+<!-- MOBILE BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+  <div class="bn-item active" onclick="showScreen('dashboard')">
+    <div class="bn-icon">🏠</div>
+    <div class="bn-label">Dashboard</div>
+  </div>
+  <div class="bn-item" onclick="showScreen('registry')">
+    <div class="bn-icon">👥</div>
+    <div class="bn-label">Owners</div>
+  </div>
+  <div class="bn-item" onclick="showScreen('treasury')">
+    <div class="bn-icon">
+      💰
+      <div class="bn-badge">61</div>
+    </div>
+    <div class="bn-label">Treasury</div>
+  </div>
+  <div class="bn-item" onclick="showScreen('community')">
+    <div class="bn-icon">📸</div>
+    <div class="bn-label">Photos</div>
+  </div>
+  <div class="bn-item" onclick="toggleMobileMenu()">
+    <div class="bn-icon">⋮</div>
+    <div class="bn-label">More</div>
+  </div>
+</div>
+
+<!-- MOBILE MORE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-overlay" onclick="closeMobileMenu()"></div>
+  <div class="mobile-menu-content">
+    <div class="mobile-menu-header">
+      <div style="font-size:16px;font-weight:700">More Options</div>
+      <div style="font-size:24px;cursor:pointer" onclick="closeMobileMenu()">×</div>
+    </div>
+    <div class="mobile-menu-items">
+      <div class="mobile-menu-item" onclick="showScreen('plotmap'); closeMobileMenu();">
+        <div class="mobile-menu-icon">🗺️</div>
+        <div class="mobile-menu-text">
+          <div class="mobile-menu-title">Plot Map</div>
+          <div class="mobile-menu-desc">View layout</div>
+        </div>
+      </div>
+      <div class="mobile-menu-item" onclick="showScreen('reminders'); closeMobileMenu();">
+        <div class="mobile-menu-icon">🔔</div>
+        <div class="mobile-menu-text">
+          <div class="mobile-menu-title">Reminders</div>
+          <div class="mobile-menu-desc">Send payment reminders</div>
+        </div>
+        <div class="bn-badge" style="position:static;margin-left:auto">8</div>
+      </div>
+      <div class="mobile-menu-item" onclick="showScreen('announcements'); closeMobileMenu();">
+        <div class="mobile-menu-icon">📢</div>
+        <div class="mobile-menu-text">
+          <div class="mobile-menu-title">Announcements</div>
+          <div class="mobile-menu-desc">Post notices</div>
+        </div>
+      </div>
+      <div class="mobile-menu-item" onclick="showScreen('documents'); closeMobileMenu();">
+        <div class="mobile-menu-icon">📄</div>
+        <div class="mobile-menu-text">
+          <div class="mobile-menu-title">Documents</div>
+          <div class="mobile-menu-desc">Files & records</div>
+        </div>
+      </div>
+      <div class="mobile-menu-item" onclick="showScreen('settings'); closeMobileMenu();">
+        <div class="mobile-menu-icon">⚙️</div>
+        <div class="mobile-menu-text">
+          <div class="mobile-menu-title">Settings</div>
+          <div class="mobile-menu-desc">Manage account</div>
+        </div>
+      </div>
+      <div class="mobile-menu-item" onclick="logout(); closeMobileMenu();" style="border-top:1px solid rgba(0,0,0,0.08);margin-top:8px;padding-top:16px">
+        <div class="mobile-menu-icon" style="color:var(--pending)">🚪</div>
+        <div class="mobile-menu-text">
+          <div class="mobile-menu-title" style="color:var(--pending)">Logout</div>
+          <div class="mobile-menu-desc">Sign out from account</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
